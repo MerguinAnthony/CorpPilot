@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <h1 class="my-4">Espace de connexion</h1>
+
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+    
+    <form action="{{ path('app_security') }}" method="post">
+        <div class="form-group">
+            <label for="username">Identifiant</label>
+            <input type="email" class="form-control" id="username" placeholder="email" name="_username" value="{{ last_username }}">
+            <small id="emailHelp" class="form-text text-muted">Ne communiquer jamais votre identifiant et votre mot de passe.</small>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" class="form-control" id="password" placeholder="********" autocomplete="off" name="_password">
+        </div>
+        <div class="form-group d-flex justify-content-center w-25 my-4 mx-auto fs-5">
+            <button type="submit" class="btn btn-primary my-4 ">connexion</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

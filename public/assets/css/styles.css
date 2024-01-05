@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Petrona&family=Salsa&family=Telex&display=swap");
+
+:root {
+  --clr-primary: #1e3d59;
+  --clr-secondary: #f5f0e1;
+  --clr-tertiary: #ffc13b;
+  --clr-quaternary: #ff6e40;
+
+  --ff-primary: "Danicing Script", cursive;
+  --ff-secondary: "Petrona", serif;
+  --ff-tertiary: "Telex", sans-serif;
+  --ff-quaternary: "Salsa", cursive;
+}
+
+.ff-1 {
+  font-family: var(--ff-primary);
+}
+
+.ff-2 {
+  font-family: var(--ff-secondary);
+}
+
+.ff-3 {
+  font-family: var(--ff-tertiary);
+}
+
+.ff-4 {
+  font-family: var(--ff-quaternary);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--ff-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--clr-primary);
+  background-color: var(--clr-secondary);
+  width: 80vw;
+  margin: 0 auto;
+}
+
+.btn-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.btn-div img {
+  width: 5rem;
+  height: 5rem;
+  box-shadow: black 0.2rem 0.2rem 0.2rem 0.2rem 0.2rem;
+}
+
+.border-white {
+  border: 5px solid var(--clr-secondary);
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: var(--clr-primary);
+  color: var(--clr-secondary);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-family: var(--ff-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: black 0.2rem 0.2rem 0.2rem 0.2rem 0.2rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--clr-tertiary);
+  color: var(--clr-primary);
+}
+
+.btn-secondary {
+  background-color: var(--clr-tertiary);
+  color: var(--clr-secondary);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-family: var(--ff-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: black 0.2rem 0.2rem 0.2rem 0.2rem 0.2rem;
+}
+
+.btn-secondary:hover {
+  background-color: var(--clr-quaternary);
+  color: var(--clr-primary);
+}
+
+.homepage-div {
+  background-color: var(--clr-primary);
+  color: var(--clr-secondary);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
