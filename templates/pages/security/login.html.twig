@@ -5,28 +5,36 @@
 
 {% block body %}
 <div class="container">
-    <h1 class="my-4">Espace de connexion</h1>
+    <a href="{{ path('app_home') }}">
+        <img src="{{asset('assets/svg/blason.svg')}}" alt="Logo" width="150" height="165" class="mt-4 d-block mx-auto">
+    </a>
+
+    <h1 class="mt-4 text-center ff-1">Espace de connexion</h1>
+    <p id="emailHelp" class="form-text text-muted text-center">Ne communiquer jamais votre identifiant et votre mot de passe.</p>
 
     {% if error %}
         <div class="alert alert-danger">
-            {{ error.messageKey|trans(error.messageData, 'security') }}
+            {{ 'Identifiants invalides. Veuillez réessayer.'|trans({}, 'security') }}
         </div>
     {% endif %}
+
     
-    <form action="{{ path('app_security') }}" method="post">
+    <form action="{{ path('app_security') }}" method="post" class="login-form mb-4">
         <div class="form-group">
             <label for="username">Identifiant</label>
             <input type="email" class="form-control" id="username" placeholder="email" name="_username" value="{{ last_username }}">
-            <small id="emailHelp" class="form-text text-muted">Ne communiquer jamais votre identifiant et votre mot de passe.</small>
         </div>
         <div class="form-group">
             <label for="password">Mot de passe</label>
             <input type="password" class="form-control" id="password" placeholder="********" autocomplete="off" name="_password">
         </div>
         <div class="form-group d-flex justify-content-center w-25 my-4 mx-auto fs-5">
-            <button type="submit" class="btn btn-primary my-4 ">connexion</button>
+            <button type="submit" class="btn btn-primary login-btn my-4 p-0"><img src="{{asset('assets/svg/login.svg')}}" alt="se connecter"></button>
         </div>
     </form>
+    <div class="return text-center mb-4">
+        <a href="{{ path('app_home') }}" class="btn btn-primary">Retour</a>
+    </div>
 </div>
 
 {% endblock %}

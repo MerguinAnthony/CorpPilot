@@ -1,0 +1,34 @@
+<footer class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <!-- Logo et nom de la société -->
+            <img src="{{ asset('assets/svg/blason.svg') }}" alt="Logo {{ companyName }}" class="img-fluid" width="100">
+            <p>{{ companyName }}</p>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <!-- Liens vers les mentions légales, CGU et données personnelles -->
+            <h5>Liens Utiles</h5>
+            <ul class="list-unstyled">
+                <li><a href="#">Mentions Légales</a></li>
+                <li><a href="#">Conditions Générales d'Utilisation</a></li>
+                <li><a href="#">Politique de Confidentialité</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <!-- Coordonnées de la mairie -->
+            <h5>Contactez la Mairie</h5>
+            <p>Adresse : {{ companyAddress }}</p>
+            <p>Téléphone : {{ companyPhone }}</p>
+            <p>Email : {{ companyEmail }}</p>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12 text-center">
+            <!-- Mention "Tous droits réservés" -->
+            <p>&copy; {{ 'now'|date('Y') }} {{ companyCreat }} - Tous droits réservés</p>
+        </div>
+    </div>
+</footer>

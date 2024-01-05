@@ -86,42 +86,62 @@ class __TwigTemplate_625ba41f06c74e16510c49a2e97af2fb extends Template
 
         // line 7
         echo "<div class=\"container\">
-    <h1 class=\"my-4\">Espace de connexion</h1>
+    <a href=\"";
+        // line 8
+        echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_home");
+        echo "\">
+        <img src=\"";
+        // line 9
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/svg/blason.svg"), "html", null, true);
+        echo "\" alt=\"Logo\" width=\"150\" height=\"165\" class=\"mt-4 d-block mx-auto\">
+    </a>
+
+    <h1 class=\"mt-4 text-center ff-1\">Espace de connexion</h1>
+    <p id=\"emailHelp\" class=\"form-text text-muted text-center\">Ne communiquer jamais votre identifiant et votre mot de passe.</p>
 
     ";
-        // line 10
-        if ((isset($context["error"]) || array_key_exists("error", $context) ? $context["error"] : (function () { throw new RuntimeError('Variable "error" does not exist.', 10, $this->source); })())) {
-            // line 11
+        // line 15
+        if ((isset($context["error"]) || array_key_exists("error", $context) ? $context["error"] : (function () { throw new RuntimeError('Variable "error" does not exist.', 15, $this->source); })())) {
+            // line 16
             echo "        <div class=\"alert alert-danger\">
             ";
-            // line 12
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\TranslationExtension']->trans(twig_get_attribute($this->env, $this->source, (isset($context["error"]) || array_key_exists("error", $context) ? $context["error"] : (function () { throw new RuntimeError('Variable "error" does not exist.', 12, $this->source); })()), "messageKey", [], "any", false, false, false, 12), twig_get_attribute($this->env, $this->source, (isset($context["error"]) || array_key_exists("error", $context) ? $context["error"] : (function () { throw new RuntimeError('Variable "error" does not exist.', 12, $this->source); })()), "messageData", [], "any", false, false, false, 12), "security"), "html", null, true);
+            // line 17
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\TranslationExtension']->trans("Identifiants invalides. Veuillez réessayer.", [], "security"), "html", null, true);
             echo "
         </div>
     ";
         }
-        // line 15
-        echo "    
+        // line 20
+        echo "
+    
     <form action=\"";
-        // line 16
+        // line 22
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_security");
-        echo "\" method=\"post\">
+        echo "\" method=\"post\" class=\"login-form mb-4\">
         <div class=\"form-group\">
             <label for=\"username\">Identifiant</label>
             <input type=\"email\" class=\"form-control\" id=\"username\" placeholder=\"email\" name=\"_username\" value=\"";
-        // line 19
-        echo twig_escape_filter($this->env, (isset($context["last_username"]) || array_key_exists("last_username", $context) ? $context["last_username"] : (function () { throw new RuntimeError('Variable "last_username" does not exist.', 19, $this->source); })()), "html", null, true);
+        // line 25
+        echo twig_escape_filter($this->env, (isset($context["last_username"]) || array_key_exists("last_username", $context) ? $context["last_username"] : (function () { throw new RuntimeError('Variable "last_username" does not exist.', 25, $this->source); })()), "html", null, true);
         echo "\">
-            <small id=\"emailHelp\" class=\"form-text text-muted\">Ne communiquer jamais votre identifiant et votre mot de passe.</small>
         </div>
         <div class=\"form-group\">
             <label for=\"password\">Mot de passe</label>
             <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"********\" autocomplete=\"off\" name=\"_password\">
         </div>
         <div class=\"form-group d-flex justify-content-center w-25 my-4 mx-auto fs-5\">
-            <button type=\"submit\" class=\"btn btn-primary my-4 \">connexion</button>
+            <button type=\"submit\" class=\"btn btn-primary login-btn my-4 p-0\"><img src=\"";
+        // line 32
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/svg/login.svg"), "html", null, true);
+        echo "\" alt=\"se connecter\"></button>
         </div>
     </form>
+    <div class=\"return text-center mb-4\">
+        <a href=\"";
+        // line 36
+        echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_home");
+        echo "\" class=\"btn btn-primary\">Retour</a>
+    </div>
 </div>
 
 ";
@@ -154,7 +174,7 @@ class __TwigTemplate_625ba41f06c74e16510c49a2e97af2fb extends Template
      */
     public function getDebugInfo()
     {
-        return array (  113 => 19,  107 => 16,  104 => 15,  98 => 12,  95 => 11,  93 => 10,  88 => 7,  78 => 6,  59 => 3,  36 => 1,);
+        return array (  142 => 36,  135 => 32,  125 => 25,  119 => 22,  115 => 20,  109 => 17,  106 => 16,  104 => 15,  95 => 9,  91 => 8,  88 => 7,  78 => 6,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -166,28 +186,36 @@ class __TwigTemplate_625ba41f06c74e16510c49a2e97af2fb extends Template
 
 {% block body %}
 <div class=\"container\">
-    <h1 class=\"my-4\">Espace de connexion</h1>
+    <a href=\"{{ path('app_home') }}\">
+        <img src=\"{{asset('assets/svg/blason.svg')}}\" alt=\"Logo\" width=\"150\" height=\"165\" class=\"mt-4 d-block mx-auto\">
+    </a>
+
+    <h1 class=\"mt-4 text-center ff-1\">Espace de connexion</h1>
+    <p id=\"emailHelp\" class=\"form-text text-muted text-center\">Ne communiquer jamais votre identifiant et votre mot de passe.</p>
 
     {% if error %}
         <div class=\"alert alert-danger\">
-            {{ error.messageKey|trans(error.messageData, 'security') }}
+            {{ 'Identifiants invalides. Veuillez réessayer.'|trans({}, 'security') }}
         </div>
     {% endif %}
+
     
-    <form action=\"{{ path('app_security') }}\" method=\"post\">
+    <form action=\"{{ path('app_security') }}\" method=\"post\" class=\"login-form mb-4\">
         <div class=\"form-group\">
             <label for=\"username\">Identifiant</label>
             <input type=\"email\" class=\"form-control\" id=\"username\" placeholder=\"email\" name=\"_username\" value=\"{{ last_username }}\">
-            <small id=\"emailHelp\" class=\"form-text text-muted\">Ne communiquer jamais votre identifiant et votre mot de passe.</small>
         </div>
         <div class=\"form-group\">
             <label for=\"password\">Mot de passe</label>
             <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"********\" autocomplete=\"off\" name=\"_password\">
         </div>
         <div class=\"form-group d-flex justify-content-center w-25 my-4 mx-auto fs-5\">
-            <button type=\"submit\" class=\"btn btn-primary my-4 \">connexion</button>
+            <button type=\"submit\" class=\"btn btn-primary login-btn my-4 p-0\"><img src=\"{{asset('assets/svg/login.svg')}}\" alt=\"se connecter\"></button>
         </div>
     </form>
+    <div class=\"return text-center mb-4\">
+        <a href=\"{{ path('app_home') }}\" class=\"btn btn-primary\">Retour</a>
+    </div>
 </div>
 
 {% endblock %}

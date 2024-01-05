@@ -1,31 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CorpPilot{% endblock %}
+{% block title %}{{ companyAbrev }}Gest{% endblock %}
 
 {% block body %}
 <div class="btn-div">
-<img src="{{asset('assets/Img/logo.png')}}" alt="Logo">
+<img src="{{asset('assets/svg/blason.svg')}}" alt="Logo" width="60" height="66">
 <a class="btn btn-primary" href="{{path('app_security')}}">
     Se connecter
 </a>
 </div>
 <div class="container mt-4 homepage-div">
     <div class="row">
-        <div class="col-md-6">
-            <img src="{{asset('assets/Img/krakenimages-Y5bvRlcCx8k-unsplash.jpg')}}" alt="Image RH" class="img-fluid left-image border-white">
+        <div class="col-md-6 d-flex align-items-center">
+            <img src="{{asset('assets/Img/img_hero.jpg')}}" alt="Image RH" class="img-fluid left-image">
         </div>
         <div class="col-md-6">
             <div class="jumbotron">
-                <h1 class="display-4 ff-4">CorpPilot</h1>
-                <p class="lead">CorpPilot est une application web qui permet de gérer les ressources humaines de votre entreprise.</p>
-                <hr class="my-4">
-                <p class="ff-2">Vous êtes chef d'entreprise ? <br>Vous avez besoin d'une application pour gérer vos ressources humaines ?</p>
-                <p class="ff-2 text-center">CorpPilot est fait pour vous !</p>
-                <p class="lead text-center">
-                    <a class="btn btn-secondary btn-lg" href="#inscription" role="button">S'inscrire</a>
-                </p>
+                <h1 class="display-4 ff-4">{{ companyName }}</h1>
+                <p class="lead">{{ companyAbrev }}Gest est une application web conçue pour simplifier la gestion des ressources humaines au sein de notre merveilleuse ville de {{ companyCity }}.</p>
+                <p class="ff-2">Que vous soyez employé ou que vous fassiez partie de l'équipe de direction, {{ companyAbrev }}Gest est là pour faciliter votre expérience au quotidien.</p>
+                <p class="ff-2">Explorez les fonctionnalités et découvrez comment rendre la gestion des ressources humaines plus efficace et agréable.</p>
+                <p class="ff-2 text-center">Bienvenue dans l'univers de {{ companyAbrev }}Gest !</p>
             </div>
         </div>
     </div>
 </div>
+<div class="separator mt-4"></div>
+{% include "partials/_homeFooter.html.twig" %}
 {% endblock %}

@@ -54,7 +54,7 @@ class __TwigTemplate_35abe972ba5fdc6d96a9a2ed8534f04b extends Template
         echo "</title>
         <link rel=\"icon\" href=\"";
         // line 6
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/Img/favicon.png"), "html", null, true);
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/svg/blason.svg"), "html", null, true);
         echo "\">
         ";
         // line 7
@@ -70,7 +70,7 @@ class __TwigTemplate_35abe972ba5fdc6d96a9a2ed8534f04b extends Template
         ";
         // line 17
         $this->displayBlock('body', $context, $blocks);
-        // line 18
+        // line 20
         echo "    </body>
 </html>
 ";
@@ -161,6 +161,9 @@ class __TwigTemplate_35abe972ba5fdc6d96a9a2ed8534f04b extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
+        // line 18
+        echo "        
+        ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -190,7 +193,7 @@ class __TwigTemplate_35abe972ba5fdc6d96a9a2ed8534f04b extends Template
      */
     public function getDebugInfo()
     {
-        return array (  155 => 17,  142 => 13,  132 => 12,  120 => 9,  115 => 8,  105 => 7,  86 => 5,  74 => 18,  72 => 17,  68 => 15,  66 => 12,  63 => 11,  61 => 7,  57 => 6,  53 => 5,  47 => 1,);
+        return array (  165 => 18,  155 => 17,  142 => 13,  132 => 12,  120 => 9,  115 => 8,  105 => 7,  86 => 5,  74 => 20,  72 => 17,  68 => 15,  66 => 12,  63 => 11,  61 => 7,  57 => 6,  53 => 5,  47 => 1,);
     }
 
     public function getSourceContext()
@@ -200,7 +203,7 @@ class __TwigTemplate_35abe972ba5fdc6d96a9a2ed8534f04b extends Template
     <head>
         <meta charset=\"UTF-8\">
         <title>{% block title %}CorpPilot{% endblock %}</title>
-        <link rel=\"icon\" href=\"{{asset('assets/Img/favicon.png')}}\">
+        <link rel=\"icon\" href=\"{{asset('assets/svg/blason.svg')}}\">
         {% block stylesheets %}
             <link rel=\"stylesheet\" href=\"{{asset('assets/bootstrap/bootstrap.min.css')}}\"/>
             <link rel=\"stylesheet\" href=\"{{asset('assets/css/styles.css')}}\"/>
@@ -211,7 +214,9 @@ class __TwigTemplate_35abe972ba5fdc6d96a9a2ed8534f04b extends Template
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        
+        {% endblock %}
     </body>
 </html>
 ", "base.html.twig", "/Users/anthonymerguin/Documents/projet/CorpPilot/templates/base.html.twig");

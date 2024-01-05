@@ -42,13 +42,11 @@ body {
   line-height: 1.5;
   color: var(--clr-primary);
   background-color: var(--clr-secondary);
-  width: 80vw;
-  margin: 0 auto;
 }
 
 .btn-div {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin: 1rem 0;
 }
@@ -57,11 +55,6 @@ body {
   width: 5rem;
   height: 5rem;
   box-shadow: black 0.2rem 0.2rem 0.2rem 0.2rem 0.2rem;
-}
-
-.border-white {
-  border: 5px solid var(--clr-secondary);
-  border-radius: 5px;
 }
 
 .btn-primary {
@@ -80,6 +73,7 @@ body {
 .btn-primary:hover {
   background-color: var(--clr-tertiary);
   color: var(--clr-primary);
+  box-shadow: none;
 }
 
 .btn-secondary {
@@ -105,4 +99,69 @@ body {
   color: var(--clr-secondary);
   padding: 1rem;
   border-radius: 0.5rem;
+}
+
+.separator {
+  border-bottom: 3px solid var(--clr-primary);
+  width: 97vw;
+  margin: 0 auto;
+}
+
+footer {
+  color: var(--clr-primary);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+}
+
+footer h5 {
+  color: var(--clr-secondary);
+  text-decoration: none;
+}
+
+.login-form {
+  background: var(--clr-primary);
+  color: var(--clr-secondary);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--clr-primary) 2px 2px 10px;
+  text-align: center;
+}
+
+.login-form label {
+  font-family: var(--ff-tertiary);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.login-form input {
+  background: var(--clr-secondary);
+  font-family: var(--ff-tertiary);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: var(--clr-primary) 2px 2px 10px;
+}
+
+/* Styles pour le placeholder de l'identifiant */
+#username::placeholder {
+  color: #ff6e40;
+}
+
+/* Styles pour le placeholder du mot de passe */
+#password::placeholder {
+  color: #ff6e40;
+}
+
+.login-form button {
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.login-form img:hover {
+  transform: scale(1.1);
 }

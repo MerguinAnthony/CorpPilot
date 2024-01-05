@@ -83,6 +83,16 @@
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">App_KernelDevDebugContainer</parameter>
+    <parameter key="company_creat">AMerguin</parameter>
+    <parameter key="company_name">Mairie de Deyvillers</parameter>
+    <parameter key="company_city">Deyvillers</parameter>
+    <parameter key="company_address">2 Rue de Lorraine</parameter>
+    <parameter key="company_zipcode" type="string">88000</parameter>
+    <parameter key="company_phone" type="string">0329340870</parameter>
+    <parameter key="company_email">contact@deyvillers.fr</parameter>
+    <parameter key="company_abrev">Deyvi</parameter>
+    <parameter key="company_blazon">changer public/assets/svg/blason.svg</parameter>
+    <parameter key="company_paysage">changer public/assets/Img/img_hero.jpg</parameter>
     <parameter key="event_dispatcher.event_aliases" type="collection">
       <parameter key="Symfony\Component\Console\Event\ConsoleCommandEvent">console.command</parameter>
       <parameter key="Symfony\Component\Console\Event\ConsoleErrorEvent">console.error</parameter>
@@ -415,7 +425,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.rmxHhKq"/>
+      <argument type="service" id=".service_locator.tkeahzw"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -2120,6 +2130,7 @@
             <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/symfony/validator/Resources/translations/validators.fr.xlf</argument>
             <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/symfony/form/Resources/translations/validators.fr.xlf</argument>
             <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/symfony/security-core/Resources/translations/security.fr.xlf</argument>
+            <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/translations/messages.fr.yaml</argument>
           </argument>
           <argument key="gl" type="collection">
             <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/symfony/validator/Resources/translations/validators.gl.xlf</argument>
@@ -3271,7 +3282,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.rmxHhKq"/>
+      <argument type="service" id=".service_locator.tkeahzw"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -7475,15 +7486,24 @@
         <argument key="authenticationUtils" type="service_closure" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.rmxHhKq" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.CElJlu_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="security" type="service_closure" id="security.helper"/>
+        <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.tkeahzw" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.rSTd.nA"/>
+        <argument key="App\Controller\StaffVacationController::index" type="service_closure" id=".service_locator.CElJlu_"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.rSTd.nA"/>
+        <argument key="App\Controller\StaffVacationController:index" type="service_closure" id=".service_locator.CElJlu_"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
       </argument>
@@ -9618,7 +9638,7 @@
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.bJ.4HC5" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.rmxHhKq"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.tkeahzw"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -9662,6 +9682,7 @@
     <service id="security.event_dispatcher.main" alias="debug.security.event_dispatcher.main"/>
     <service id=".service_locator.gFlme_s" alias=".service_locator.y4_Zrx."/>
     <service id=".service_locator.7NIAq8D" alias=".service_locator.rSTd.nA"/>
+    <service id=".service_locator.j3CwlUb" alias=".service_locator.CElJlu_"/>
     <service id=".service_locator.Q1z.f9O" alias=".service_locator.jUv.zyj"/>
   </services>
 </container>

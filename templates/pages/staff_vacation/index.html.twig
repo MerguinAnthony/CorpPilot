@@ -3,18 +3,45 @@
 {% block title %}Hello StaffVacationController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/anthonymerguin/Documents/projet/CorpPilot/src/Controller/StaffVacationController.php'|file_link(0) }}">src/Controller/StaffVacationController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/anthonymerguin/Documents/projet/CorpPilot/templates/staff_vacation/index.html.twig'|file_link(0) }}">templates/staff_vacation/index.html.twig</a></code></li>
-    </ul>
+<div class="container">
+    <section class="headerStaff">
+        <div class="row mt-4">
+            <div class="col-4"></div>
+            <div class="col-4 text-center"> <!-- Ajout de la classe text-center pour centrer le blason -->
+                <img src="{{ asset('assets/svg/blason.svg') }}" width="100" alt="Blason de la ville de deyvillers">
+            </div>
+            <div class="col-4 d-flex justify-content-end"> <!-- Ajout de la classe text-right pour aligner à droite -->
+                <a href="{{ path('app_logout') }}">
+                    <img src="{{ asset('assets/svg/logout.svg') }}" alt="Déconnexion">
+                </a>
+            </div>
+        </div>
+    </section>
+    {% if currentUser %}
+        <div class="row mt-4">
+            <div class="col-6 d-flex justify-content-center">
+                <img src="{{ asset('assets/Img/69944235142__78B07BD1-5790-446E-8015-0A4866FD84B1.png') }}" alt="Photo de profil{{ currentUser.lastName }} {{ currentUser.firstName }}" width="100" class="rounded-circle">
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-12 ff-3 fs-3">
+                        <p class="p-0 my-3 ">{{ currentUser.lastName }} {{ currentUser.firstName }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>{{ currentUser.job }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h1 class="text-center">Demande de congés</h1>
+        </div>
+    </div>
+    <section class="formVac">
+    </section>
 </div>
 {% endblock %}
