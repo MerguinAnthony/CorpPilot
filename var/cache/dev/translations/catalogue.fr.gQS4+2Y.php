@@ -167,6 +167,11 @@ $catalogue = new MessageCatalogue('fr', array (
     'Too many failed login attempts, please try again in %minutes% minute.' => 'Plusieurs tentatives de connexion ont échoué, veuillez réessayer dans %minutes% minute.',
     'Too many failed login attempts, please try again in %minutes% minutes.' => 'Plusieurs tentatives de connexion ont échoué, veuillez réessayer dans %minutes% minutes.',
   ),
+  'messages' => 
+  array (
+    'Mot de passe incorrect. Veuillez réessayer.' => 'Bad credentials. Please try again.',
+    'Identifiants invalides. Veuillez réessayer.' => 'Invalid credentials. Please try again.',
+  ),
 ));
 
 $catalogueEn = new MessageCatalogue('en', array (

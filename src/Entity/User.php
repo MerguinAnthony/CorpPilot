@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -82,9 +84,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $Job = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Vacation::class)]
+    private Collection $vacations;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->vacations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -292,6 +298,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setJob(string $Job): static
     {
         $this->Job = $Job;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vacation>
+     */
+    public function getVacations(): Collection
+    {
+        return $this->vacations;
+    }
+
+    public function addVacation(Vacation $vacation): static
+    {
+        $this->vacations->add($vacation);
+        $vacation->setUser($this);
+
+        return $this;
+    }
+
+    public function removeVacation(Vacation $vacation): static
+    {
+        if ($this->vacations->removeElement($vacation)) {
+            // set the owning side to null (unless already changed)
+            if ($vacation->getUser() === $this) {
+                $vacation->setUser(null);
+            }
+        }
 
         return $this;
     }

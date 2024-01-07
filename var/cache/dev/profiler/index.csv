@@ -1789,3 +1789,12 @@ e0e373,127.0.0.1,GET,https://127.0.0.1:8000/assets/bootstrap/bootstrap.min.js.ma
 ee5cc3,127.0.0.1,GET,https://127.0.0.1:8000/assets/bootstrap/bootstrap.min.js.map,1704471818,,404,request
 c52421,127.0.0.1,GET,https://127.0.0.1:8000/assets/bootstrap/bootstrap.min.css.map,1704471818,46d63a,404,request
 46d63a,127.0.0.1,GET,https://127.0.0.1:8000/assets/bootstrap/bootstrap.min.css.map,1704471818,,404,request
+f07136,127.0.0.1,GET,https://127.0.0.1:8000/,1704564790,,200,request
+ee4b38,127.0.0.1,GET,https://127.0.0.1:8000/,1704564790,,200,request
+522b8c,127.0.0.1,GET,https://127.0.0.1:8000/connexion,1704564796,,200,request
+3c3d41,127.0.0.1,POST,https://127.0.0.1:8000/connexion,1704564803,,302,request
+7f79b7,127.0.0.1,GET,https://127.0.0.1:8000/staff/vacation,1704564803,,200,request
+233490,127.0.0.1,GET,https://127.0.0.1:8000/assets/bootstrap/bootstrap.min.css.map,1704564814,451aa5,404,request
+8333c4,127.0.0.1,GET,https://127.0.0.1:8000/assets/bootstrap/bootstrap.min.js.map,1704564814,f1ef9f,404,request
+451aa5,127.0.0.1,GET,https://127.0.0.1:8000/assets/bootstrap/bootstrap.min.css.map,1704564814,,404,request
+f1ef9f,127.0.0.1,GET,https://127.0.0.1:8000/assets/bootstrap/bootstrap.min.js.map,1704564814,,404,request
