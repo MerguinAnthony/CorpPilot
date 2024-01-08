@@ -24,7 +24,7 @@ class NumberDayOff
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $UserDay = null;
+    private ?User $userDay = null;
 
     public function getId(): ?int
     {
@@ -69,12 +69,12 @@ class NumberDayOff
 
     public function getUserDay(): ?User
     {
-        return $this->UserDay;
+        return $this->userDay;
     }
 
-    public function setUserDay(User $UserDay): static
+    public function setUserDay(User $userDay): static
     {
-        $this->UserDay = $UserDay;
+        $this->userDay = $userDay;
 
         return $this;
     }

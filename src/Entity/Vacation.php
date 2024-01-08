@@ -24,9 +24,10 @@ class Vacation
     #[Assert\GreaterThan(propertyPath: 'startDate')]
     private ?\DateTimeInterface $endDate = null;
 
-    #[ORM\Column(type: Types::BINARY)]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[Assert\Choice(choices: [0, 1, 2])]
     #[Assert\NotNull]
-    private $approved = null;
+    private $approved = 0;
 
     #[ORM\ManyToOne(inversedBy: 'vacations')]
     private ?User $user = null;

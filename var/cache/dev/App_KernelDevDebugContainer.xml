@@ -394,6 +394,9 @@
       <tag name="doctrine.orm.entity_listener"/>
       <argument type="service" id="security.user_password_hasher"/>
     </service>
+    <service id="App\Form\VacationType" class="App\Form\VacationType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
     <service id="App\Repository\NumberDayOffRepository" class="App\Repository\NumberDayOffRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -433,7 +436,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.tkeahzw"/>
+      <argument type="service" id=".service_locator.5BiVZLm"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -1329,9 +1332,11 @@
       <argument type="service" id="form.registry"/>
       <argument type="collection">
         <argument>Symfony\Component\Form\Extension\Core\Type</argument>
+        <argument>App\Form</argument>
         <argument>Symfony\Bridge\Doctrine\Form\Type</argument>
       </argument>
       <argument type="collection">
+        <argument>App\Form\VacationType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FormType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\ChoiceType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FileType</argument>
@@ -3290,7 +3295,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.tkeahzw"/>
+      <argument type="service" id=".service_locator.5BiVZLm"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -3772,7 +3777,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
-      <argument type="service" id=".service_locator.Za9MpXe"/>
+      <argument type="service" id=".service_locator.3LmMhbP"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -7105,6 +7110,8 @@
     <service id=".abstract.instanceof.App\Controller\StaffVacationController" class="App\Controller\StaffVacationController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\VacationType" class="App\Form\VacationType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\VacationType" class="App\Form\VacationType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\NumberDayOffRepository" class="App\Repository\NumberDayOffRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\NumberDayOffRepository" class="App\Repository\NumberDayOffRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" abstract="true"/>
@@ -7498,24 +7505,47 @@
         <argument key="authenticationUtils" type="service_closure" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.CElJlu_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.ZVQqiHX" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="numberDayOffRepository" type="service_closure" id="App\Repository\NumberDayOffRepository"/>
         <argument key="security" type="service_closure" id="security.helper"/>
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
+        <argument key="vacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.tkeahzw" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.kaxaMdc" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
+        <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
+        <argument key="vacation" type="service_closure" id=".errored..service_locator.kaxaMdc.App\Entity\Vacation"/>
+      </argument>
+    </service>
+    <service id=".service_locator.jYa8ZcM" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="vacation" type="service_closure" id=".errored..service_locator.jYa8ZcM.App\Entity\Vacation"/>
+      </argument>
+    </service>
+    <service id=".service_locator.5BiVZLm" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.rSTd.nA"/>
-        <argument key="App\Controller\StaffVacationController::index" type="service_closure" id=".service_locator.CElJlu_"/>
+        <argument key="App\Controller\StaffVacationController::delete" type="service_closure" id=".service_locator.jYa8ZcM"/>
+        <argument key="App\Controller\StaffVacationController::index" type="service_closure" id=".service_locator.ZVQqiHX"/>
+        <argument key="App\Controller\StaffVacationController::modify" type="service_closure" id=".service_locator.kaxaMdc"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.rSTd.nA"/>
-        <argument key="App\Controller\StaffVacationController:index" type="service_closure" id=".service_locator.CElJlu_"/>
+        <argument key="App\Controller\StaffVacationController:delete" type="service_closure" id=".service_locator.jYa8ZcM"/>
+        <argument key="App\Controller\StaffVacationController:index" type="service_closure" id=".service_locator.ZVQqiHX"/>
+        <argument key="App\Controller\StaffVacationController:modify" type="service_closure" id=".service_locator.kaxaMdc"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
       </argument>
@@ -7677,9 +7707,10 @@
       <argument type="service" id="argument_resolver.query_parameter_value_resolver"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.Za9MpXe" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.3LmMhbP" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Form\VacationType" type="service_closure" id="App\Form\VacationType"/>
         <argument key="Symfony\Bridge\Doctrine\Form\Type\EntityType" type="service_closure" id="form.type.entity"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ChoiceType" type="service_closure" id="form.type.choice"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ColorType" type="service_closure" id="form.type.color"/>
@@ -8525,6 +8556,12 @@
     <service id="debug.security.event_dispatcher.main.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
     <service id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.y4_Zrx.&quot;: it needs an instance of &quot;Symfony\Component\Config\Loader\LoaderInterface&quot; but this type has been excluded from autowiring."/>
+    </service>
+    <service id=".errored..service_locator.kaxaMdc.App\Entity\Vacation" class="App\Entity\Vacation">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.kaxaMdc&quot;: it needs an instance of &quot;App\Entity\Vacation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.jYa8ZcM.App\Entity\Vacation" class="App\Entity\Vacation">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.jYa8ZcM&quot;: it needs an instance of &quot;App\Entity\Vacation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".console.command.about.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>about</argument>
@@ -9652,7 +9689,7 @@
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.bJ.4HC5" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.tkeahzw"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.5BiVZLm"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -9696,7 +9733,9 @@
     <service id="security.event_dispatcher.main" alias="debug.security.event_dispatcher.main"/>
     <service id=".service_locator.gFlme_s" alias=".service_locator.y4_Zrx."/>
     <service id=".service_locator.7NIAq8D" alias=".service_locator.rSTd.nA"/>
-    <service id=".service_locator.j3CwlUb" alias=".service_locator.CElJlu_"/>
+    <service id=".service_locator.wb5VMCq" alias=".service_locator.ZVQqiHX"/>
+    <service id=".service_locator.iDBrSt3" alias=".service_locator.kaxaMdc"/>
+    <service id=".service_locator.cTA9f01" alias=".service_locator.jYa8ZcM"/>
     <service id=".service_locator.Q1z.f9O" alias=".service_locator.jUv.zyj"/>
   </services>
 </container>

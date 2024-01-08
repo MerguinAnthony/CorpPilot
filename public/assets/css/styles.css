@@ -28,6 +28,22 @@
   font-family: var(--ff-quaternary);
 }
 
+.fc-1 {
+  color: var(--clr-primary);
+}
+
+.fc-2 {
+  color: var(--clr-secondary);
+}
+
+.fc-3 {
+  color: var(--clr-tertiary);
+}
+
+.fc-4 {
+  color: var(--clr-quaternary);
+}
+
 *,
 *::before,
 *::after {
@@ -42,6 +58,7 @@ body {
   line-height: 1.5;
   color: var(--clr-primary);
   background-color: var(--clr-secondary);
+  padding-bottom: 60px;
 }
 
 .btn-div {
@@ -164,4 +181,80 @@ footer h5 {
 
 .login-form img:hover {
   transform: scale(1.1);
+}
+
+.formVac,
+.formVacModif {
+  background: var(--clr-primary);
+  color: var(--clr-secondary);
+  padding: 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  box-shadow: var(--clr-primary) 2px 2px 10px;
+  text-align: center;
+}
+
+.formVacModif {
+  border-radius: 0.5rem;
+}
+
+.vacStatus {
+  background: var(--clr-primary);
+  color: var(--clr-secondary);
+  padding: 1rem;
+  box-shadow: var(--clr-primary) 2px 2px 10px;
+  text-align: center;
+}
+
+.vacDispo {
+  background: var(--clr-primary);
+  color: var(--clr-secondary);
+  padding: 1rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  box-shadow: var(--clr-primary) 2px 2px 10px;
+  text-align: center;
+}
+
+.submit-btn {
+  border: none;
+  background: none;
+}
+
+.submit-btn-toggle {
+  cursor: pointer;
+}
+
+.period {
+  width: 40%;
+}
+
+.verif {
+  width: 20%;
+}
+
+.modify {
+  width: 10%;
+}
+
+.delete {
+  width: 10%;
+}
+
+.navbar-mobile {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  background-color: var(--clr-tertiary);
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+}
+
+.navbar-mobile a {
+  text-decoration: none;
+  color: #495057;
+}
+
+.navbar-mobile img {
+  max-width: 50px; /* Ajustez la taille selon vos besoins */
+  max-height: 50px;
 }

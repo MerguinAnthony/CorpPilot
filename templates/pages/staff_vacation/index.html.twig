@@ -41,7 +41,101 @@
             <h1 class="text-center">Demande de congés</h1>
         </div>
     </div>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success w-50 mx-auto my-4  text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
     <section class="formVac">
+        {{ form_start(form) }}
+            <div class="row d-flex justify-content-evenly">
+                <div class="col-4">
+                    {{ form_row(form.startDate) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.endDate) }}
+                </div>
+            </div>
+            <div class="d-block text-center">
+                {{ form_row(form.submit) }}
+            </div>
+        {{ form_end(form) }}
+    </section>
+    <section class="vacStatus mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center">Statut demande</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="period"></th>
+                            <th class="verif"></th>
+                            <th class="modify"></th>
+                            <th class="delete"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vacation in vacations %}
+                            <tr>
+                                <td>{{ vacation.startDate|date('d/m/Y') ~ ' au ' ~ vacation.endDate|date('d/m/Y') }}</td>
+                                <td>
+                                    {% if vacation.approved == 0 %}
+                                        <img src="{{ asset('assets/svg/waiting.svg') }}" alt="En attente">
+                                    {% elseif vacation.approved == 1 %}
+                                        <img src="{{ asset('assets/svg/checked.svg') }}" alt="Validé">
+                                    {% elseif vacation.approved == 2 %}
+                                        <img src="{{ asset('assets/svg/cancel.svg') }}" alt="Refusé">
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_staff_vacation_modify', {'id': vacation.id}) }}">
+                                        <img src="{{ asset('assets/svg/modify.svg') }}" alt="Modifier">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_staff_vacation_delete', {'id': vacation.id}) }}">
+                                        <img src="{{ asset('assets/svg/trash.svg') }}" alt="Supprimer">
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class="vacDispo my-4">
+    <div class="row">
+            <div class="col-12">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="dayNumber"></th>
+                            <th class="dayNumberLabel"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dayVacation in dayVacations %}
+                            <tr>
+                                <td>{{ dayVacation.available }}</td>
+                                <td>{{ dayVacation.gotOutPeriod }}</td>
+                                <td>{{ dayVacation.got }}</td>
+                            </tr>
+                            <tr>
+                                <td>Jours de congés disponibles</td>
+                                <td>Jours de congés obtenus hors période</td>
+                                <td>Jours de congés obtenus</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </section>
 </div>
+    {% include "partials/_phoneNav.html.twig" %}
 {% endblock %}

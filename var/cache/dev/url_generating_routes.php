@@ -21,8 +21,12 @@ return [
     'app_security' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/connexion']], [], [], []],
     'app_logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/deconnexion']], [], [], []],
     'app_staff_vacation' => [[], ['_controller' => 'App\\Controller\\StaffVacationController::index'], [], [['text', '/staff/vacation']], [], [], []],
+    'app_staff_vacation_modify' => [['id'], ['_controller' => 'App\\Controller\\StaffVacationController::modify'], [], [['text', '/modify'], ['variable', '/', '[^/]++', 'id', true], ['text', '/staff/vacation']], [], [], []],
+    'app_staff_vacation_delete' => [['id'], ['_controller' => 'App\\Controller\\StaffVacationController::delete'], [], [['text', '/delete'], ['variable', '/', '[^/]++', 'id', true], ['text', '/staff/vacation']], [], [], []],
     'App\Controller\HomeController::index' => [[], ['_controller' => 'App\\Controller\\HomeController::index'], [], [['text', '/']], [], [], []],
     'App\Controller\SecurityController::login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/connexion']], [], [], []],
     'App\Controller\SecurityController::logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/deconnexion']], [], [], []],
     'App\Controller\StaffVacationController::index' => [[], ['_controller' => 'App\\Controller\\StaffVacationController::index'], [], [['text', '/staff/vacation']], [], [], []],
+    'App\Controller\StaffVacationController::modify' => [['id'], ['_controller' => 'App\\Controller\\StaffVacationController::modify'], [], [['text', '/modify'], ['variable', '/', '[^/]++', 'id', true], ['text', '/staff/vacation']], [], [], []],
+    'App\Controller\StaffVacationController::delete' => [['id'], ['_controller' => 'App\\Controller\\StaffVacationController::delete'], [], [['text', '/delete'], ['variable', '/', '[^/]++', 'id', true], ['text', '/staff/vacation']], [], [], []],
 ];

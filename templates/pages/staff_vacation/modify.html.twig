@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StaffVacationController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <section class="headerStaff">
+        <div class="row mt-4">
+            <div class="col-4"></div>
+            <div class="col-4 text-center"> <!-- Ajout de la classe text-center pour centrer le blason -->
+                <img src="{{ asset('assets/svg/blason.svg') }}" width="100" alt="Blason de la ville de deyvillers">
+            </div>
+            <div class="col-4 d-flex justify-content-end"> <!-- Ajout de la classe text-right pour aligner à droite -->
+                <a href="{{ path('app_logout') }}">
+                    <img src="{{ asset('assets/svg/logout.svg') }}" alt="Déconnexion">
+                </a>
+            </div>
+        </div>
+    </section>
+    {% if currentUser %}
+        <div class="row mt-4">
+            <div class="col-6 d-flex justify-content-center">
+                <img src="{{ asset('assets/Img/69944235142__78B07BD1-5790-446E-8015-0A4866FD84B1.png') }}" alt="Photo de profil{{ currentUser.lastName }} {{ currentUser.firstName }}" width="100" class="rounded-circle">
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-12 ff-3 fs-3">
+                        <p class="p-0 my-3 ">{{ currentUser.lastName }} {{ currentUser.firstName }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>{{ currentUser.job }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h1 class="text-center">Modification de congés</h1>
+        </div>
+    </div>
+    <section class="formVacModif">
+        {{ form_start(form) }}
+            <div class="row d-flex justify-content-evenly">
+                <div class="col-4">
+                    {{ form_row(form.startDate) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.endDate) }}
+                </div>
+            </div>
+            <div class="d-block text-center">
+                {{ form_row(form.submit) }}
+            </div>
+        {{ form_end(form) }}
+    </section>
+</div>
+{% include "partials/_phoneNav.html.twig" %}
+{% endblock %}
