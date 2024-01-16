@@ -59,21 +59,27 @@ class __TwigTemplate_ac49b1fb53bb6df6dd9d8af588a4630c extends Template
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_staff_vacation");
         echo "\">Demande de congés</a>
         </li>
+        <li class=\"nav-item\">
+          <a class=\"nav-link\" href=\"";
+        // line 13
+        echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_profile");
+        echo "\">Mon profil</a>
+        </li>
         ";
-        // line 12
+        // line 15
         if ($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_ADMIN")) {
-            // line 13
+            // line 16
             echo "        <li class=\"nav-item dropdown\">
           <a class=\"nav-link dropdown-toggle\" href=\"#\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
             Gestion
           </a>
           <ul class=\"dropdown-menu\">
             <li><a class=\"dropdown-item\" href=\"";
-            // line 18
+            // line 21
             echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_leave_management");
             echo "\">Gestion des congés</a></li>
             <li><a class=\"dropdown-item\" href=\"";
-            // line 19
+            // line 22
             echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_user");
             echo "\">Gestion des employés</a></li>
             <li><hr class=\"dropdown-divider\"></li>
@@ -82,15 +88,15 @@ class __TwigTemplate_ac49b1fb53bb6df6dd9d8af588a4630c extends Template
         </li>
         ";
         }
-        // line 25
+        // line 28
         echo "      </ul>
     </div>
   </div>
   <div id=\"desktoplogout\">
       ";
-        // line 29
-        $this->loadTemplate("partials/_logout.html.twig", "partials/_desktopNav.html.twig", 29)->display($context);
-        // line 30
+        // line 32
+        $this->loadTemplate("partials/_logout.html.twig", "partials/_desktopNav.html.twig", 32)->display($context);
+        // line 33
         echo "  </div>
 </nav>";
         
@@ -122,7 +128,7 @@ class __TwigTemplate_ac49b1fb53bb6df6dd9d8af588a4630c extends Template
      */
     public function getDebugInfo()
     {
-        return array (  94 => 30,  92 => 29,  86 => 25,  77 => 19,  73 => 18,  66 => 13,  64 => 12,  59 => 10,  47 => 3,  43 => 1,);
+        return array (  100 => 33,  98 => 32,  92 => 28,  83 => 22,  79 => 21,  72 => 16,  70 => 15,  65 => 13,  59 => 10,  47 => 3,  43 => 1,);
     }
 
     public function getSourceContext()
@@ -137,6 +143,9 @@ class __TwigTemplate_ac49b1fb53bb6df6dd9d8af588a4630c extends Template
       <ul class=\"navbar-nav\">
         <li class=\"nav-item\">
           <a class=\"nav-link active\" aria-current=\"page\" href=\"{{path('app_staff_vacation')}}\">Demande de congés</a>
+        </li>
+        <li class=\"nav-item\">
+          <a class=\"nav-link\" href=\"{{path('app_profile')}}\">Mon profil</a>
         </li>
         {% if is_granted('ROLE_ADMIN') %}
         <li class=\"nav-item dropdown\">

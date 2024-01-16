@@ -28,71 +28,51 @@ class StaffVacationController extends AbstractController
         EntityManagerInterface $manager,
         Request $request
     ): Response {
-        // Récupérer l'utilisateur actuellement authentifié
         $user = $security->getUser();
 
-        // Créer un formulaire de demande de congés
         $formDays = $this->createForm(VacationAvailableType::class);
-
         $formDays->handleRequest($request);
 
-        // Vérifier si le formulaire a été soumis et est valide
+
         if ($formDays->isSubmitted() && $formDays->isValid()) {
-            // Récupérer les données du formulaire
             $vacationData = $formDays->getData();
 
-            // Créer une nouvelle instance de l'entité Vacation
             $vacation = new Vacation();
             $vacation->setStartDate($vacationData['startDate']);
             $vacation->setEndDate($vacationData['endDate']);
             $vacation->setApproved(0);
 
-            // Associer l'utilisateur actuel à la demande de congés
             $vacation->setUser($user);
 
-            // Enregistrer dans la base de données
             $manager->persist($vacation);
             $manager->flush();
-
-            // Ajouter une notification ou un message de succès
             $this->addFlash('success', 'Votre demande de congés a été enregistrée avec succès.');
 
-            // Rediriger après envoi du formulaire
-            return $this->redirectToRoute('app_staff_vacation'); // Remplacez par la route de votre choix
+            return $this->redirectToRoute('app_staff_vacation');
         }
 
-        // Créer un formulaire de demande de congés par heure
         $formHours = $this->createForm(VacationHoursType::class);
-
         $formHours->handleRequest($request);
 
-        // Vérifier si le formulaire a été soumis et est valide
         if ($formHours->isSubmitted() && $formHours->isValid()) {
-            // Récupérer les données du formulaire
             $vacationData = $formHours->getData();
 
-            // Créer une nouvelle instance de l'entité Vacation
             $vacation = new Vacation();
-            $vacation->setStartDate($vacationData['startDate']);
-            $vacation->setEndDate($vacationData['endDate']);
+            $vacation->setStartHours($vacationData['startHours']);
+            $vacation->setEndHours($vacationData['endHours']);
             $vacation->setApproved(0);
-            $vacation->setHours($vacationData['hours']);
 
-            // Associer l'utilisateur actuel à la demande de congés
             $vacation->setUser($user);
 
-            // Enregistrer dans la base de données
+
             $manager->persist($vacation);
             $manager->flush();
 
-            // Ajouter une notification ou un message de succès
             $this->addFlash('success', 'Votre demande de congés a été enregistrée avec succès.');
 
-            // Rediriger après envoi du formulaire
-            return $this->redirectToRoute('app_staff_vacation'); // Remplacez par la route de votre choix
+            return $this->redirectToRoute('app_staff_vacation');
         }
 
-        // Passer les informations de l'utilisateur et le formulaire à la vue
         return $this->render('pages/staff_vacation/index.html.twig', [
             'users' => $userRepository->findAll(),
             'currentUser' => $user,

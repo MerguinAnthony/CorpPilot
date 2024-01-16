@@ -32,9 +32,11 @@ class Vacation
     #[ORM\ManyToOne(inversedBy: 'vacations')]
     private ?User $user = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $hours = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $startHours = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endHours = null;
 
     public function getId(): ?int
     {
@@ -89,14 +91,26 @@ class Vacation
         return $this;
     }
 
-    public function getHours(): ?float
+    public function getStartHours(): ?\DateTimeInterface
     {
-        return $this->hours;
+        return $this->startHours;
     }
 
-    public function setHours(?float $hours): static
+    public function setStartHours(?\DateTimeInterface $startHours): static
     {
-        $this->hours = $hours;
+        $this->startHours = $startHours;
+
+        return $this;
+    }
+
+    public function getEndHours(): ?\DateTimeInterface
+    {
+        return $this->endHours;
+    }
+
+    public function setEndHours(?\DateTimeInterface $endHours): static
+    {
+        $this->endHours = $endHours;
 
         return $this;
     }

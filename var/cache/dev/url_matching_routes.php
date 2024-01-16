@@ -16,6 +16,7 @@ return [
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
         '/' => [[['_route' => 'app_home', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
         '/admin/gestion-des-conges' => [[['_route' => 'app_leave_management', '_controller' => 'App\\Controller\\LeaveManagementController::index'], null, null, null, false, false, null]],
+        '/staff/profile' => [[['_route' => 'app_profile', '_controller' => 'App\\Controller\\ProfileController::index'], null, null, null, false, false, null]],
         '/connexion' => [[['_route' => 'app_security', '_controller' => 'App\\Controller\\SecurityController::login'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/deconnexion' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, ['GET' => 0], null, false, false, null]],
         '/staff/Demande-de-conges' => [[['_route' => 'app_staff_vacation', '_controller' => 'App\\Controller\\StaffVacationController::index'], null, null, null, false, false, null]],

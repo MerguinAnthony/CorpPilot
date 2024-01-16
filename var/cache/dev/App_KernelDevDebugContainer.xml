@@ -409,6 +409,13 @@
         <argument type="service" id=".service_locator.jUv.zyj.App\Controller\LeaveManagementController"/>
       </call>
     </service>
+    <service id="App\Controller\ProfileController" class="App\Controller\ProfileController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.jUv.zyj.App\Controller\ProfileController"/>
+      </call>
+    </service>
     <service id="App\Controller\SecurityController" class="App\Controller\SecurityController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -434,6 +441,9 @@
     <service id="App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true">
       <tag name="doctrine.fixture.orm"/>
       <argument type="service" id="security.user_password_hasher"/>
+    </service>
+    <service id="App\Form\SetUserType" class="App\Form\SetUserType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
     </service>
     <service id="App\Form\UserType" class="App\Form\UserType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
@@ -483,7 +493,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.RWICROm"/>
+      <argument type="service" id=".service_locator.nG61dgq"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -1384,6 +1394,7 @@
         <argument>Vich\UploaderBundle\Form\Type</argument>
       </argument>
       <argument type="collection">
+        <argument>App\Form\SetUserType</argument>
         <argument>App\Form\UserType</argument>
         <argument>App\Form\VacationAvailableType</argument>
         <argument>App\Form\VacationHoursType</argument>
@@ -3371,7 +3382,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.RWICROm"/>
+      <argument type="service" id=".service_locator.nG61dgq"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -3853,7 +3864,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
-      <argument type="service" id=".service_locator.2.PVQoT"/>
+      <argument type="service" id=".service_locator.gXfxE_u"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -7500,6 +7511,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\LeaveManagementController" class="App\Controller\LeaveManagementController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\LeaveManagementController" class="App\Controller\LeaveManagementController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\LeaveManagementController" class="App\Controller\LeaveManagementController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -7511,6 +7525,8 @@
     <service id=".abstract.instanceof.App\Controller\UserController" class="App\Controller\UserController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\SetUserType" class="App\Form\SetUserType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\SetUserType" class="App\Form\SetUserType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\UserType" class="App\Form\UserType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\UserType" class="App\Form\UserType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\VacationAvailableType" class="App\Form\VacationAvailableType" autowire="true" abstract="true"/>
@@ -7927,6 +7943,14 @@
         <argument key="vacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
       </argument>
     </service>
+    <service id=".service_locator.GMs5F5S" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="passwordHasher" type="service_closure" id="security.user_password_hasher"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
+      </argument>
+    </service>
     <service id=".service_locator.rSTd.nA" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7967,14 +7991,6 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.GMs5F5S" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
-        <argument key="passwordHasher" type="service_closure" id="security.user_password_hasher"/>
-        <argument key="security" type="service_closure" id="security.helper"/>
-      </argument>
-    </service>
     <service id=".service_locator.eRJx6vO" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7993,7 +8009,7 @@
         <argument key="vacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.RWICROm" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.nG61dgq" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\LeaveManagementController::enAttente" type="service_closure" id=".service_locator.gTFsReg"/>
@@ -8001,6 +8017,7 @@
         <argument key="App\Controller\LeaveManagementController::refus" type="service_closure" id=".service_locator.gTFsReg"/>
         <argument key="App\Controller\LeaveManagementController::suppression" type="service_closure" id=".service_locator.gTFsReg"/>
         <argument key="App\Controller\LeaveManagementController::validation" type="service_closure" id=".service_locator.BF135X0"/>
+        <argument key="App\Controller\ProfileController::index" type="service_closure" id=".service_locator.GMs5F5S"/>
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Controller\StaffVacationController::delete" type="service_closure" id=".service_locator.rMV3m6Z"/>
         <argument key="App\Controller\StaffVacationController::index" type="service_closure" id=".service_locator.ZVQqiHX"/>
@@ -8019,6 +8036,7 @@
         <argument key="App\Controller\LeaveManagementController:refus" type="service_closure" id=".service_locator.gTFsReg"/>
         <argument key="App\Controller\LeaveManagementController:suppression" type="service_closure" id=".service_locator.gTFsReg"/>
         <argument key="App\Controller\LeaveManagementController:validation" type="service_closure" id=".service_locator.BF135X0"/>
+        <argument key="App\Controller\ProfileController:index" type="service_closure" id=".service_locator.GMs5F5S"/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Controller\StaffVacationController:delete" type="service_closure" id=".service_locator.rMV3m6Z"/>
         <argument key="App\Controller\StaffVacationController:index" type="service_closure" id=".service_locator.ZVQqiHX"/>
@@ -8189,9 +8207,10 @@
       <argument type="service" id="argument_resolver.query_parameter_value_resolver"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.2.PVQoT" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.gXfxE_u" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Form\SetUserType" type="service_closure" id="App\Form\SetUserType"/>
         <argument key="App\Form\UserType" type="service_closure" id="App\Form\UserType"/>
         <argument key="App\Form\VacationAvailableType" type="service_closure" id="App\Form\VacationAvailableType"/>
         <argument key="App\Form\VacationHoursType" type="service_closure" id="App\Form\VacationHoursType"/>
@@ -8667,6 +8686,12 @@
     <service id=".service_locator.jUv.zyj.App\Controller\LeaveManagementController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\LeaveManagementController"/>
       <argument>App\Controller\LeaveManagementController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.jUv.zyj" method="withContext"/>
+    </service>
+    <service id=".service_locator.jUv.zyj.App\Controller\ProfileController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\ProfileController"/>
+      <argument>App\Controller\ProfileController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.jUv.zyj" method="withContext"/>
     </service>
@@ -10218,7 +10243,7 @@
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.bJ.4HC5" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.RWICROm"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.nG61dgq"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -10264,12 +10289,12 @@
     <service id=".service_locator.YSsAhCY" alias=".service_locator.9.EA2Tq"/>
     <service id=".service_locator.t_tHO59" alias=".service_locator.BF135X0"/>
     <service id=".service_locator.0YBxJTe" alias=".service_locator.gTFsReg"/>
+    <service id=".service_locator.Nbm8.Qg" alias=".service_locator.GMs5F5S"/>
     <service id=".service_locator.7NIAq8D" alias=".service_locator.rSTd.nA"/>
     <service id=".service_locator.wb5VMCq" alias=".service_locator.ZVQqiHX"/>
     <service id=".service_locator.iDBrSt3" alias=".service_locator.kaxaMdc"/>
     <service id=".service_locator.eieuaYl" alias=".service_locator.rMV3m6Z"/>
     <service id=".service_locator.j3CwlUb" alias=".service_locator.CElJlu_"/>
-    <service id=".service_locator.Nbm8.Qg" alias=".service_locator.GMs5F5S"/>
     <service id=".service_locator.xHMYhje" alias=".service_locator.eRJx6vO"/>
     <service id=".service_locator.BXSRv6i" alias=".service_locator.itpeuSf"/>
     <service id=".service_locator.Q1z.f9O" alias=".service_locator.jUv.zyj"/>

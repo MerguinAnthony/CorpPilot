@@ -1,0 +1,13 @@
+{{ form_start(formDays) }}
+    <div class="row d-flex justify-content-evenly">
+        <div class="col-4">
+            {{ form_row(formDays.startDate) }}
+        </div>
+        <div class="col-4">
+            {{ form_row(formDays.endDate) }}
+        </div>
+    </div>
+    <div class="d-block text-center">
+        {{ form_row(formDays.submit) }}
+    </div>
+{{ form_end(formDays) }}

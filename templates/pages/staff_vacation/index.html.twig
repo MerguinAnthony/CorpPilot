@@ -38,24 +38,17 @@
     <div class="col-md-6">
         <section class="formVac" id="col1">
             <label>Choisissez votre compte</label>
-            <select class="form-select w-75 d-block mx-auto">
+            <select id="vacationType" class="form-select w-75 d-block mx-auto mb-4">
                 <option value="1">Jour de congé classique</option>
                 <option value="2">Compte épargne temps</option>
                 <option value="3">Heures</option>
             </select>
-                {{ form_start(formDays) }}
-                    <div class="row d-flex justify-content-evenly">
-                        <div class="col-4">
-                            {{ form_row(formDays.startDate) }}
-                        </div>
-                        <div class="col-4">
-                            {{ form_row(formDays.endDate) }}
-                        </div>
-                    </div>
-                    <div class="d-block text-center">
-                        {{ form_row(formDays.submit) }}
-                    </div>
-                {{ form_end(formDays) }}
+                <div id="formDays">
+                    {% include "partials/_formDays.html.twig" %}
+                </div>
+                <div id="formHours" class="d-none">
+                    {% include "partials/_formHours.html.twig" %}
+                </div>
             </section>
         </div>
         <div class="col-md-6">
@@ -79,7 +72,12 @@
                             <tbody>
                                 {% for vacation in vacations %}
                                     <tr>
-                                        <td>{{ vacation.startDate|date('d/m/Y') ~ ' au ' ~ vacation.endDate|date('d/m/Y') }}</td>
+                                        <td>
+                                            {{ vacation.startDate|date('d/m/Y') ~ ' au ' ~ vacation.endDate|date('d/m/Y') }}
+                                            {% if vacation.startHours is not null and vacation.endHours is not null %}
+                                                <span class="hours">{{ vacation.startHours|date('H:i') ~ ' à ' ~ vacation.endHours|date('H:i') }}</span>
+                                            {% endif %}
+                                        </td>
                                         <td>
                                             {% if vacation.approved == 0 %}
                                                 <img src="{{ asset('assets/svg/waiting.svg') }}" alt="En attente">
@@ -135,6 +133,27 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var vacationTypeSelect = document.getElementById('vacationType');
+        var formDaysDiv = document.getElementById('formDays');
+        var formHoursDiv = document.getElementById('formHours');
+
+        vacationTypeSelect.addEventListener('change', function() {
+            var selectedValue = vacationTypeSelect.value;
+
+            formDaysDiv.style.display = 'none';
+            formHoursDiv.style.display = 'none';
+
+            if (selectedValue === '1') {
+                formDaysDiv.style.display = 'block';
+            } else if (selectedValue === '2') {
+                formDaysDiv.style.display = 'block';
+            } else if (selectedValue === '3') {
+                formHoursDiv.classList.remove('d-none');
+                formHoursDiv.style.display = 'block';
+                document.querySelector('.hours').classList.remove('d-none');
+            }
+        });
+
     var columns; // Déclarer la variable columns en dehors des fonctions
 
     function updatePage() {
