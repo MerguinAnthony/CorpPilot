@@ -2,19 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity('email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\EntityListeners(['App\EntityListener\UserListener'])]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -29,8 +31,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Assert\NotNull()]
     private array $roles = [];
-
-    private ?string $plainPassword = null;
 
     /**
      * @var string The hashed password
@@ -56,12 +56,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\NotNull()]
-    #[Assert\Length(min: 15, max: 15)]
-    private ?string $social_security = null;
+    private ?string $socialSecurity = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]
-    #[Assert\Length(min: 10, max: 10)]
+    #[Assert\Length(min: 9, max: 11)]
     private ?int $phone = null;
 
     #[ORM\Column(length: 255)]
@@ -82,13 +81,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Job = null;
+    private ?string $job = null;
+
+    #[Vich\UploadableField(mapping: 'user_image', fileNameProperty: 'profilePictureName')]
+    private ?File $profilePictureFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $profilePictureName = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Vacation::class)]
     private Collection $vacations;
 
     public function __construct()
     {
+        $this->updatedAt = new \DateTimeImmutable();
         $this->createdAt = new \DateTimeImmutable();
         $this->vacations = new ArrayCollection();
     }
@@ -139,29 +148,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Get the value of plainPassword
-     */
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * Set the value of plainPassword
-     *
-     * @return  self
-     */
-    public function setPlainPassword($plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
-    }
-
-    /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -220,12 +209,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getSocialSecurity(): ?string
     {
-        return $this->social_security;
+        return $this->socialSecurity;
     }
 
-    public function setSocialSecurity(string $social_security): static
+    public function setSocialSecurity(string $socialSecurity): static
     {
-        $this->social_security = $social_security;
+        $this->socialSecurity = $socialSecurity;
 
         return $this;
     }
@@ -292,14 +281,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getJob(): ?string
     {
-        return $this->Job;
+        return $this->job;
     }
 
-    public function setJob(string $Job): static
+    public function setJob(string $job): static
     {
-        $this->Job = $Job;
+        $this->job = $job;
 
         return $this;
+    }
+
+    public function setProfilePictureFile(?File $profilePictureFile = null): void
+    {
+        $this->profilePictureFile = $profilePictureFile;
+
+        if (null !== $profilePictureFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getProfilePictureFile(): ?File
+    {
+        return $this->profilePictureFile;
+    }
+
+    public function setProfilePictureName(?string $profilePictureName): void
+    {
+        $this->profilePictureName = $profilePictureName;
+    }
+
+    public function getProfilePictureName(): ?string
+    {
+        return $this->profilePictureName;
     }
 
     /**
@@ -326,6 +341,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $vacation->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of updatedAt
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the value of updatedAt
+     *
+     * @return  self
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

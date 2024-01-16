@@ -1,41 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StaffVacationController!{% endblock %}
+{% block title %}Demande de congés | {{ companyAbrev }}Gest{% endblock %}
 
 {% block body %}
+<div id="desktopNav" style="display: none;">
+    {% include "partials/_desktopNav.html.twig" %}
+</div>
 <div class="container">
     <section class="headerStaff">
-        <div class="row mt-4">
+        <div class="row mt-4 ">
+            <div id="desktopUser" class="col-4" style="display: none;">
+                {% include "partials/_currentUser.html.twig" %}
+            </div>
             <div class="col-4"></div>
-            <div class="col-4 text-center"> <!-- Ajout de la classe text-center pour centrer le blason -->
+            <div class="col-4 d-flex justify-content-center align-items-center">
                 <img src="{{ asset('assets/svg/blason.svg') }}" width="100" alt="Blason de la ville de deyvillers">
             </div>
-            <div class="col-4 d-flex justify-content-end"> <!-- Ajout de la classe text-right pour aligner à droite -->
-                <a href="{{ path('app_logout') }}">
-                    <img src="{{ asset('assets/svg/logout.svg') }}" alt="Déconnexion">
-                </a>
+            <div id="phonelogout" class="col-4 d-flex justify-content-end align-items-center">
+                {% include "partials/_logout.html.twig" %}
             </div>
         </div>
     </section>
-    {% if currentUser %}
-        <div class="row mt-4">
-            <div class="col-6 d-flex justify-content-center">
-                <img src="{{ asset('assets/Img/69944235142__78B07BD1-5790-446E-8015-0A4866FD84B1.png') }}" alt="Photo de profil{{ currentUser.lastName }} {{ currentUser.firstName }}" width="100" class="rounded-circle">
-            </div>
-            <div class="col-6">
-                <div class="row">
-                    <div class="col-12 ff-3 fs-3">
-                        <p class="p-0 my-3 ">{{ currentUser.lastName }} {{ currentUser.firstName }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <p>{{ currentUser.job }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
+    <div id="phoneUser" style="display: none;">
+        {% include "partials/_currentUser.html.twig" %}
+    </div>
     <div class="row mt-4">
         <div class="col-12">
             <h1 class="text-center">Demande de congés</h1>
@@ -46,96 +34,159 @@
             {{ message }}
         </div>
     {% endfor %}
-    <section class="formVac">
-        {{ form_start(form) }}
-            <div class="row d-flex justify-content-evenly">
-                <div class="col-4">
-                    {{ form_row(form.startDate) }}
-                </div>
-                <div class="col-4">
-                    {{ form_row(form.endDate) }}
-                </div>
-            </div>
-            <div class="d-block text-center">
-                {{ form_row(form.submit) }}
-            </div>
-        {{ form_end(form) }}
-    </section>
-    <section class="vacStatus mt-4">
-        <div class="row">
-            <div class="col-12">
-                <h2 class="text-center">Statut demande</h2>
-            </div>
+<div class="row">
+    <div class="col-md-6">
+        <section class="formVac" id="col1">
+            <label>Choisissez votre compte</label>
+            <select class="form-select w-75 d-block mx-auto">
+                <option value="1">Jour de congé classique</option>
+                <option value="2">Compte épargne temps</option>
+                <option value="3">Heures</option>
+            </select>
+                {{ form_start(formDays) }}
+                    <div class="row d-flex justify-content-evenly">
+                        <div class="col-4">
+                            {{ form_row(formDays.startDate) }}
+                        </div>
+                        <div class="col-4">
+                            {{ form_row(formDays.endDate) }}
+                        </div>
+                    </div>
+                    <div class="d-block text-center">
+                        {{ form_row(formDays.submit) }}
+                    </div>
+                {{ form_end(formDays) }}
+            </section>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="period"></th>
-                            <th class="verif"></th>
-                            <th class="modify"></th>
-                            <th class="delete"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for vacation in vacations %}
-                            <tr>
-                                <td>{{ vacation.startDate|date('d/m/Y') ~ ' au ' ~ vacation.endDate|date('d/m/Y') }}</td>
-                                <td>
-                                    {% if vacation.approved == 0 %}
-                                        <img src="{{ asset('assets/svg/waiting.svg') }}" alt="En attente">
-                                    {% elseif vacation.approved == 1 %}
-                                        <img src="{{ asset('assets/svg/checked.svg') }}" alt="Validé">
-                                    {% elseif vacation.approved == 2 %}
-                                        <img src="{{ asset('assets/svg/cancel.svg') }}" alt="Refusé">
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <a href="{{ path('app_staff_vacation_modify', {'id': vacation.id}) }}">
-                                        <img src="{{ asset('assets/svg/modify.svg') }}" alt="Modifier">
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ path('app_staff_vacation_delete', {'id': vacation.id}) }}">
-                                        <img src="{{ asset('assets/svg/trash.svg') }}" alt="Supprimer">
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <div class="col-md-6">
+            <section class="vacStatus" id="col2">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center">Statut demande</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="th_period"></th>
+                                    <th class="th_verif"></th>
+                                    <th class="th_modify"></th>
+                                    <th class="th_delete"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vacation in vacations %}
+                                    <tr>
+                                        <td>{{ vacation.startDate|date('d/m/Y') ~ ' au ' ~ vacation.endDate|date('d/m/Y') }}</td>
+                                        <td>
+                                            {% if vacation.approved == 0 %}
+                                                <img src="{{ asset('assets/svg/waiting.svg') }}" alt="En attente">
+                                            {% elseif vacation.approved == 1 %}
+                                                <img src="{{ asset('assets/svg/checked.svg') }}" alt="Validé">
+                                            {% elseif vacation.approved == 2 %}
+                                                <img src="{{ asset('assets/svg/cancel.svg') }}" alt="Refusé">
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('app_staff_vacation_modify', {'id': vacation.id}) }}">
+                                                <img src="{{ asset('assets/svg/modify.svg') }}" alt="Modifier">
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('app_staff_vacation_delete', {'id': vacation.id}) }}">
+                                                <img src="{{ asset('assets/svg/trash.svg') }}" alt="Supprimer">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
+    </div>
     <section class="vacDispo my-4">
-    <div class="row">
-            <div class="col-12">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="dayNumber"></th>
-                            <th class="dayNumberLabel"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for dayVacation in dayVacations %}
-                            <tr>
-                                <td>{{ dayVacation.available }}</td>
-                                <td>{{ dayVacation.gotOutPeriod }}</td>
-                                <td>{{ dayVacation.got }}</td>
-                            </tr>
-                            <tr>
-                                <td>Jours de congés disponibles</td>
-                                <td>Jours de congés obtenus hors période</td>
-                                <td>Jours de congés obtenus</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class="row">
+            <div class="col-12 d-flex flex-row justify-content-around">
+                {% for dayVacation in dayVacations %}
+                <div>
+                    <span>{{ dayVacation.available }}</span>
+                    <p>Jours de congés disponibles</p>
+                </div>
+                <div>
+                    <span>{{ dayVacation.cet }}</span>
+                    <p>Jours - compte épargne temps</p>
+                </div>
+                <div>
+                    <span>{{ dayVacation.hoursAvailable }}</span>
+                    <p>Heures disponibles</p>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
 </div>
+<div id="phoneNav" style="display: none;">
     {% include "partials/_phoneNav.html.twig" %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var columns; // Déclarer la variable columns en dehors des fonctions
+
+    function updatePage() {
+        var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+        // Décider quel menu afficher en fonction de la largeur de la fenêtre
+        if (windowWidth <= 768) {
+            document.getElementById('phoneNav').style.display = 'block';
+            document.getElementById('desktopNav').style.display = 'none';
+            document.getElementById('desktopUser').style.display = 'none';
+            document.getElementById('phoneUser').style.display = 'block';
+            document.getElementById('phonelogout').classList.remove('d-none');
+            document.querySelector('.vacStatus').style.borderRadius = '0';
+            document.querySelector('.vacStatus').classList.add('mt-4');
+        } else {
+            document.getElementById('phoneNav').style.display = 'none';
+            document.getElementById('desktopNav').style.display = 'block';
+            document.getElementById('desktopUser').style.display = 'block';
+            document.getElementById('phoneUser').style.display = 'none';
+            document.getElementById('phonelogout').classList.add('d-none');
+            document.getElementById('desktoplogout').style.display = 'block';
+            document.querySelector('.vacStatus').style.borderRadius = '0.5rem 0.5rem 0 0';
+            document.querySelector('.vacStatus').classList.remove('mt-4');
+        }
+
+
+        // Récupérer dans une constante la col1
+        const col1 = document.getElementById('col1');
+        // Récupérer dans une constante la col2
+        const col2 = document.getElementById('col2');
+
+        // Définir quelle colonne à la height la plus grande
+        if (col1.offsetHeight > col2.offsetHeight) {
+            columns = col1.offsetHeight;
+        } else {
+            columns = col2.offsetHeight;
+        }
+
+        // Appliquer la height la plus grande aux deux colonnes
+        col1.style.height = columns + 'px';
+        col2.style.height = columns + 'px';
+
+
+    }
+
+    updatePage();
+
+    // Attacher le gestionnaire d'événements pour redimensionner la fenêtre
+    window.addEventListener('resize', updatePage);
+});
+
+
+
+</script>
 {% endblock %}

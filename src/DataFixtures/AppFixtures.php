@@ -40,7 +40,7 @@ class AppFixtures extends Fixture
         $adminUser->setBirthday(new \DateTimeImmutable('1991-03-27'));
         $adminUser->setSocialSecurity(1910322483915);
         $adminUser->setJob('Développeur Web');
-        $adminUser->setPlainPassword('Am270391');
+        $adminUser->setPassword('Am270391');
         $adminUser->setCreatedAt(new DateTimeImmutable());
         $manager->persist($adminUser);
 
@@ -58,7 +58,7 @@ class AppFixtures extends Fixture
             $user->setBirthday(new \DateTimeImmutable('1991-03-27'));
             $user->setSocialSecurity($this->faker->numberBetween(1000000000000, 9999999999999));
             $user->setJob($this->faker->jobTitle);
-            $user->setPlainPassword('password');
+            $user->setPassword('password');
             $user->setCreatedAt(new \DateTimeImmutable());
             $manager->persist($user);
         }
@@ -89,9 +89,9 @@ class AppFixtures extends Fixture
 
         foreach ($users as $user) {
             $numberDayOff = new NumberDayOff();
-            $numberDayOff->setAvailable($this->faker->randomFloat(2, 0, 30));
-            $numberDayOff->setGot($this->faker->randomFloat(2, 0, 30));
-            $numberDayOff->setGotOutPeriod($this->faker->randomFloat(2, 0, 30));
+            $numberDayOff->setAvailable($this->faker->numberBetween(0, 25));
+            $numberDayOff->setCet($this->faker->numberBetween(0, 50));
+            $numberDayOff->setHoursAvailable($this->faker->randomFloat(2, 0, 100));
             $numberDayOff->setUserDay($user);
 
             $manager->persist($numberDayOff);

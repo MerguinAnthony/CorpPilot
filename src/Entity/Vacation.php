@@ -15,12 +15,12 @@ class Vacation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Assert\GreaterThan('today')]
     #[Assert\LessThan(propertyPath: 'endDate')]
     private ?\DateTimeInterface $startDate = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Assert\GreaterThan(propertyPath: 'startDate')]
     private ?\DateTimeInterface $endDate = null;
 
@@ -31,6 +31,9 @@ class Vacation
 
     #[ORM\ManyToOne(inversedBy: 'vacations')]
     private ?User $user = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $hours = null;
 
 
     public function getId(): ?int
@@ -82,6 +85,18 @@ class Vacation
     public function setUser(?user $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getHours(): ?float
+    {
+        return $this->hours;
+    }
+
+    public function setHours(?float $hours): static
+    {
+        $this->hours = $hours;
 
         return $this;
     }

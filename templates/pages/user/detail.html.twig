@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'employé {{ user.lastname }} {{ user.firstname }} | {{ companyAbrev }}Gest{% endblock %}
+
+
+{% block body %}
+<div id="desktopNav" style="display: none;">
+    {% include "partials/_desktopNav.html.twig" %}
+</div>
+<div class="container">
+    <section class="headerStaff">
+        <div class="row mt-4 ">
+            <div id="desktopUser" class="col-4" style="display: none;">
+                {% include "partials/_currentUser.html.twig" %}
+            </div>
+            <div class="col-4"></div>
+            <div class="col-4 d-flex justify-content-center align-items-center">
+                <img src="{{ asset('assets/svg/blason.svg') }}" width="100" alt="Blason de la ville de deyvillers">
+            </div>
+            <div id="phonelogout" class="col-4 d-flex justify-content-end align-items-center">
+                {% include "partials/_logout.html.twig" %}
+            </div>
+        </div>
+    </section>
+    <div id="phoneUser" style="display: none;">
+        {% include "partials/_currentUser.html.twig" %}
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <h1 class="text-center">Information {{ user.lastname }} {{ user.firstname }}</h1>
+        </div>
+    </div>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success w-50 mx-auto my-4  text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Détails de l'utilisateur</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                    <img src="{{ asset('assets/Img/69944235142__78B07BD1-5790-446E-8015-0A4866FD84B1.png') }}" alt="Photo de profil{{ currentUser.lastName }} {{ currentUser.firstName }}" width="200" height="200">
+                </div>
+                <div class="col-md-8">
+                    <p><strong>Nom :</strong> {{ user.lastname }}</p>
+                    <p><strong>Prénom :</strong> {{ user.firstname }}</p>
+                    <p><strong>Email :</strong> {{ user.email }}</p>
+                    <p><strong>Date de naissance :</strong> {{ user.birthday|date('d/m/Y') }}</p>
+                    <p><strong>Poste :</strong> {{ user.job }}</p>
+                    <p><strong>Date d'embauche :</strong> {{ user.createdAt|date('d/m/Y') }}</p>
+                    <p><strong>Numéro de téléphone :</strong> {{ user.phone }}</p>
+                    <p><strong>Adresse :</strong> {{ user.adress }}</p>
+                    <p><strong>Code postal :</strong> {{ user.zipcode }}</p>
+                    <p><strong>Ville :</strong> {{ user.city }}</p>
+                    <p><strong>Numéro de sécurité sociale :</strong> {{ user.socialSecurity }}</p>
+                    <p><strong>Type d'utilisateur :</strong>
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                            Administrateur
+                        {% else %}
+                            Employé
+                        {% endif %}
+                    </p>
+                    <p><strong>Entreprise :</strong> {{ company_name }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-around">
+            <a href="{{path('app_user')}}"><img src="{{asset('assets/svg/return.svg')}}" alt="retour en arrière"></a>
+            <a href="{{ path('app_user_edit', {'id': user.id}) }}"><img src="{{asset('assets/svg/modify.svg')}}" alt="Modifier"></a>
+            <!-- L'utilisateur courant ne peut pas se supprimer lui-même -->
+            {% if currentUser.id != user.id %}
+            <a data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                <img src="{{ asset('assets/svg/trash.svg') }}" alt="Supprimer">
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer cet utilisateur ?
+            </div>
+            <div class="modal-footer">
+                <a href="{{ path('app_user_delete', {'id': user.id}) }}">
+                    <img src="{{ asset('assets/svg/cancel.svg') }}" alt="Supprimer">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="phoneNav" style="display: none;">
+    {% include "partials/_phoneNav.html.twig" %}
+</div>
+
+<script>
+    var columns; // Déclarer la variable columns en dehors des fonctions
+
+    function updatePage() {
+        var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+        // Décider quel menu afficher en fonction de la largeur de la fenêtre
+        if (windowWidth <= 768) {
+            document.getElementById('phoneNav').style.display = 'block';
+            document.getElementById('desktopNav').style.display = 'none';
+            document.getElementById('desktopUser').style.display = 'none';
+            document.getElementById('phoneUser').style.display = 'block';
+            document.getElementById('phonelogout').classList.remove('d-none');
+        } else {
+            document.getElementById('phoneNav').style.display = 'none';
+            document.getElementById('desktopNav').style.display = 'block';
+            document.getElementById('desktopUser').style.display = 'block';
+            document.getElementById('phoneUser').style.display = 'none';
+            document.getElementById('phonelogout').classList.add('d-none');
+            document.getElementById('desktoplogout').style.display = 'block';
+        }
+    }
+
+    updatePage();
+
+    // Attacher le gestionnaire d'événements pour redimensionner la fenêtre
+    window.addEventListener('resize', updatePage);
+
+</script>
+{% endblock %}

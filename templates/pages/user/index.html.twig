@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des employés | {{ companyAbrev }}Gest{% endblock %}
+
+
+{% block body %}
+<div id="desktopNav" style="display: none;">
+    {% include "partials/_desktopNav.html.twig" %}
+</div>
+<div class="container">
+    <section class="headerStaff">
+        <div class="row mt-4 ">
+            <div id="desktopUser" class="col-4" style="display: none;">
+                {% include "partials/_currentUser.html.twig" %}
+            </div>
+            <div class="col-4"></div>
+            <div class="col-4 d-flex justify-content-center align-items-center">
+                <img src="{{ asset('assets/svg/blason.svg') }}" width="100" alt="Blason de la ville de deyvillers">
+            </div>
+            <div id="phonelogout" class="col-4 d-flex justify-content-end align-items-center">
+                {% include "partials/_logout.html.twig" %}
+            </div>
+        </div>
+    </section>
+    <div id="phoneUser" style="display: none;">
+        {% include "partials/_currentUser.html.twig" %}
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <h1 class="text-center">Gestion des employés</h1>
+        </div>
+    </div>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success w-50 mx-auto my-4  text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-12">
+            <section class="userIn mb-4">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mt-4">Ajouter un employé</h2>
+                        <a href="{{ path('app_user_new') }}">
+                            <img src="{{ asset('assets/svg/newStaff.svg') }}" alt="Ajouter un employé">
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <h2 class="text-center">Liste des employés</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table table-transparent">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nom Prénom</th>
+                                        <th scope="col" class="d-none d-md-table-cell">Email</th>
+                                        <th scope="col" class="d-none d-md-table-cell">Date de naissance</th>
+                                        <th scope="col">Poste</th>
+                                        <th scope="col" class="d-none d-md-table-cell">Permission</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.lastname }} {{ user.firstname }}</td>
+                                            <td class="d-none d-md-table-cell">{{ user.email }}</td>
+                                            <td class="d-none d-md-table-cell">{{ user.birthday|date('d/m/Y') }}</td>
+                                            <td>{{ user.job }}</td>
+                                            {% if 'ROLE_ADMIN' in user.roles %}
+                                                <td class="d-none d-md-table-cell">Administrateur</td>
+                                            {% else %}
+                                                <td class="d-none d-md-table-cell">Employé</td>
+                                            {% endif %}
+                                            <td>
+                                                <a href="{{ path('app_user_show', {'id': user.id}) }}">
+                                                    <img src="{{ asset('assets/svg/detail.svg') }}" alt="Détail">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6" class="text-center">Aucun employé</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div id="phoneNav" style="display: none;">
+    {% include "partials/_phoneNav.html.twig" %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var columns; // Déclarer la variable columns en dehors des fonctions
+
+    function updatePage() {
+        var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+        // Décider quel menu afficher en fonction de la largeur de la fenêtre
+        if (windowWidth <= 768) {
+            document.getElementById('phoneNav').style.display = 'block';
+            document.getElementById('desktopNav').style.display = 'none';
+            document.getElementById('desktopUser').style.display = 'none';
+            document.getElementById('phoneUser').style.display = 'block';
+            document.getElementById('phonelogout').classList.remove('d-none');
+        } else {
+            document.getElementById('phoneNav').style.display = 'none';
+            document.getElementById('desktopNav').style.display = 'block';
+            document.getElementById('desktopUser').style.display = 'block';
+            document.getElementById('phoneUser').style.display = 'none';
+            document.getElementById('phonelogout').classList.add('d-none');
+            document.getElementById('desktoplogout').style.display = 'block';
+        }
+    }
+
+    updatePage();
+
+    // Attacher le gestionnaire d'événements pour redimensionner la fenêtre
+    window.addEventListener('resize', updatePage);
+});
+
+
+
+</script>
+{% endblock %}

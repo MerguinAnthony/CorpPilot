@@ -14,13 +14,13 @@ class NumberDayOff
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?float $available = null;
+    private ?int $available = null;
 
     #[ORM\Column]
-    private ?float $got = null;
+    private ?int $cet = null;
 
     #[ORM\Column]
-    private ?float $gotOutPeriod = null;
+    private ?float $hoursAvailable = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -31,38 +31,38 @@ class NumberDayOff
         return $this->id;
     }
 
-    public function getAvailable(): ?float
+    public function getAvailable(): ?int
     {
         return $this->available;
     }
 
-    public function setAvailable(float $available): static
+    public function setAvailable(int $available): static
     {
         $this->available = $available;
 
         return $this;
     }
 
-    public function getGot(): ?float
+    public function getCet(): ?int
     {
-        return $this->got;
+        return $this->cet;
     }
 
-    public function setGot(float $got): static
+    public function setCet(int $cet): static
     {
-        $this->got = $got;
+        $this->cet = $cet;
 
         return $this;
     }
 
-    public function getGotOutPeriod(): ?float
+    public function getHoursAvailable(): ?float
     {
-        return $this->gotOutPeriod;
+        return $this->hoursAvailable;
     }
 
-    public function setGotOutPeriod(float $gotOutPeriod): static
+    public function setHoursAvailable(float $hoursAvailable): static
     {
-        $this->gotOutPeriod = $gotOutPeriod;
+        $this->hoursAvailable = $hoursAvailable;
 
         return $this;
     }
