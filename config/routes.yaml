@@ -1,5 +1,14 @@
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+  resource:
+    path: ../src/Controller/
+    namespace: App\Controller
+  type: attribute
+
+app_generate_document:
+  path: "/user/generate-document/{id}"
+  controller: 'App\Controller\LeaveManagementController::generateDocument'
+  methods: ["GET"]
+
+cgu_pdf:
+  path: "/CGU.pdf"
+  controller: 'App\Controller\LegalController::serveCguPdf'

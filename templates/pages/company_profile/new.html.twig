@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}s'incrire | Corppilot{% endblock %}
+
+
+{% block body %}
+<div class="btn-div">
+    <img src="{{asset('assets/Img/logo.png')}}" alt="Logo" width="60" height="66">
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <h1 class="text-center">S'incrire</h1>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <h2 class="text-center">Informations société</h2>
+    </div>
+</div>
+<div class="w-50 mx-auto">
+    {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.companyName) }}
+        {{ form_widget(form.companyName) }}
+
+        {{ form_label(form.companyAbrev) }}
+        {{ form_widget(form.companyAbrev) }}
+
+        {{ form_label(form.companyPhone) }}
+        {{ form_widget(form.companyPhone) }}
+
+        {{ form_label(form.companyAddress) }}
+        {{ form_widget(form.companyAddress) }}
+
+        {{ form_label(form.companyCity) }}
+        {{ form_widget(form.companyCity) }}
+
+        {{ form_label(form.companyZipcode) }}
+        {{ form_widget(form.companyZipcode) }}
+
+        {{ form_label(form.companyEmail) }}
+        {{ form_widget(form.companyEmail) }}
+
+        {{ form_label(form.companySiret) }}
+        {{ form_widget(form.companySiret) }}
+
+        {{ form_label(form.companyLogoFile) }}
+        {{ form_widget(form.companyLogoFile) }}
+    </div>
+    {{ form_end(form) }}
+</div>
+
+<div class="btn-div">
+    <a class="btn btn-primary"href="{{path('app_home')}}">retour</a>
+</div>
+<div class="separator mt-4"></div>
+{% include "partials/_homeFooter.html.twig" %}
+{% endblock %}

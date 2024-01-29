@@ -1,0 +1,14 @@
+<section class="headerStaff">
+    <div class="row mt-4 ">
+        <div id="desktopUser" class="col-4" style="display: none;">
+            {% include "partials/_currentUser.html.twig" %}
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4 d-flex justify-content-center align-items-center">
+            <img src="{{ vich_uploader_asset(company, 'companyLogoFile') }}" width="100" alt="Logo de {{ company.companyName}}">
+        </div>
+        <div id="phonelogout" class="col-4 d-flex justify-content-end align-items-center">
+            {% include "partials/_logout.html.twig" %}
+        </div>
+    </div>
+</section>

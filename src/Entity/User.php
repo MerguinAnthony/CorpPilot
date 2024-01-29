@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Company;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -94,6 +95,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Vacation::class)]
     private Collection $vacations;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company = null;
 
     public function __construct()
     {
@@ -361,6 +366,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    // Dans la classe User
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+        $company->addUser($this);
 
         return $this;
     }

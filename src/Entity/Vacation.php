@@ -15,13 +15,10 @@ class Vacation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    #[Assert\GreaterThan('today')]
-    #[Assert\LessThan(propertyPath: 'endDate')]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $startDate = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    #[Assert\GreaterThan(propertyPath: 'startDate')]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
     #[ORM\Column(type: Types::INTEGER)]
@@ -37,6 +34,18 @@ class Vacation
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endHours = null;
+
+    #[ORM\Column]
+    private ?int $account = null;
+
+    #[ORM\Column]
+    private ?int $nbDays = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $nbHours = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $nbDaysOutsidePeriod = null;
 
     public function getId(): ?int
     {
@@ -111,6 +120,54 @@ class Vacation
     public function setEndHours(?\DateTimeInterface $endHours): static
     {
         $this->endHours = $endHours;
+
+        return $this;
+    }
+
+    public function getAccount(): ?int
+    {
+        return $this->account;
+    }
+
+    public function setAccount(int $account): static
+    {
+        $this->account = $account;
+
+        return $this;
+    }
+
+    public function getNbDays(): ?int
+    {
+        return $this->nbDays;
+    }
+
+    public function setNbDays(int $nbDays): static
+    {
+        $this->nbDays = $nbDays;
+
+        return $this;
+    }
+
+    public function getNbHours(): ?float
+    {
+        return $this->nbHours;
+    }
+
+    public function setNbHours(?float $nbHours): static
+    {
+        $this->nbHours = $nbHours;
+
+        return $this;
+    }
+
+    public function getNbDaysOutsidePeriod(): ?int
+    {
+        return $this->nbDaysOutsidePeriod;
+    }
+
+    public function setNbDaysOutsidePeriod(?int $nbDaysOutsidePeriod): static
+    {
+        $this->nbDaysOutsidePeriod = $nbDaysOutsidePeriod;
 
         return $this;
     }

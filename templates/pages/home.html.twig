@@ -1,13 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ companyAbrev }}Gest{% endblock %}
+{% block title %}Corp Pilot{% endblock %}
 
 {% block body %}
 <div class="btn-div">
-<img src="{{asset('assets/svg/blason.svg')}}" alt="Logo" width="60" height="66">
-<a class="btn btn-primary" href="{{path('app_security')}}">
-    Se connecter
-</a>
+<img src="{{asset('assets/Img/logo.png')}}" alt="Logo" width="60" height="66">
 </div>
 <div class="container mt-4 homepage-div">
     <div class="row">
@@ -16,14 +13,20 @@
         </div>
         <div class="col-md-6">
             <div class="jumbotron">
-                <h1 class="display-4 ff-4">{{ companyName }}</h1>
-                <p class="lead">{{ companyAbrev }}Gest est une application web conçue pour simplifier la gestion des ressources humaines au sein de notre merveilleuse ville de {{ companyCity }}.</p>
-                <p class="ff-2">Que vous soyez employé ou que vous fassiez partie de l'équipe de direction, {{ companyAbrev }}Gest est là pour faciliter votre expérience au quotidien.</p>
+                <h1 class="display-4 ff-4">Corp Pilot</h1>
+                <p class="lead">Corp Pilot est une application web conçue pour simplifier la gestion des ressources humaines au sein de votre entreprise.</p>
+                <p class="ff-2">Que vous soyez employé ou que vous fassiez partie de l'équipe de direction, Corp Pilot est là pour faciliter votre expérience au quotidien.</p>
                 <p class="ff-2">Explorez les fonctionnalités et découvrez comment rendre la gestion des ressources humaines plus efficace et agréable.</p>
-                <p class="ff-2 text-center">Bienvenue dans l'univers de {{ companyAbrev }}Gest !</p>
+                <p class="ff-2 text-center">Bienvenue dans l'univers de Corp Pilot !</p>
             </div>
         </div>
     </div>
+</div>
+<div class="btn-div">
+    <a class="btn btn-primary"href="{{path('company_profile_new')}}">S'incrire</a>
+    <a class="btn btn-primary" href="{{path('app_security')}}">
+        Se connecter
+    </a>
 </div>
 <div class="separator mt-4"></div>
 {% include "partials/_homeFooter.html.twig" %}

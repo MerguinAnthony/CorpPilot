@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use Faker\Core\Number;
+use Knp\Snappy\Pdf;
+use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Repository\CompanyRepository;
 use App\Repository\VacationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NumberDayOffRepository;
@@ -21,17 +23,17 @@ class LeaveManagementController extends AbstractController
         UserRepository $userRepository,
         Security $security,
         VacationRepository $vacationRepository,
+        CompanyRepository $companyRepository,
     ): Response {
         // Récupérer l'utilisateur actuellement authentifié
         $user = $security->getUser();
-
 
         // Passer les informations de l'utilisateur, le formulaire et les demandes de congé à la vue
         return $this->render('pages/leave_management/index.html.twig', [
             'users' => $userRepository->findAll(),
             'currentUser' => $user,
-            'companyAbrev' => $this->getParameter('company_abrev'),
             'leaves' => $vacationRepository->findByUser(),
+            'company' => $companyRepository->findOneBy(['id' => $user]),
         ]);
     }
 
@@ -43,77 +45,27 @@ class LeaveManagementController extends AbstractController
         EntityManagerInterface $manager,
         NumberDayOffRepository $numberDayOffRepository
     ): Response {
-        // Récupérer la demande de congé
+        // On récupère la demande de congé
         $vacation = $vacationRepository->find($id);
+
+        // On récupère le nombre de jours de congés restants
+        $numberDayOff = $numberDayOffRepository->findOneBy(['userDay' => $vacation->getUser()]);
+
+        // Selon le type de congé, on déduit sur le bon compte
+        if ($vacation->getAccount() == 1) {
+            $numberDayOff->setAvailable($numberDayOff->getAvailable() - $vacation->getNbDays());
+        } elseif ($vacation->getAccount() == 2) {
+            $numberDayOff->setCet($numberDayOff->getCet() - $vacation->getNbDays());
+        } elseif ($vacation->getAccount() == 3) {
+            $nbHours = $vacation->getNbHours();
+
+            $hoursAvailable = $numberDayOff->getHoursAvailable() - $nbHours;
+
+            $numberDayOff->setHoursAvailable($hoursAvailable);
+        }
 
         // Valider la demande de congé
         $vacation->setApproved(1);
-
-        // Fonction pour calculer le nombre de jours ouvrables entre deux dates
-        function getWorkingDaysBetweenDates($startDate, $endDate)
-        {
-            $workingDays = 0;
-
-            $currentDate = clone $startDate;
-
-            while ($currentDate <= $endDate) {
-                // Exclure les samedis, dimanches et jours fériés
-                if ($currentDate->format('N') < 6 && !isHoliday($currentDate)) {
-                    $workingDays++;
-                }
-
-                $currentDate->modify('+1 day');
-            }
-
-            return $workingDays;
-        }
-
-        // Fonction pour vérifier si une date est un jour férié
-        function isHoliday($date)
-        {
-            $apiUrl = 'https://date.nager.at/api/v3/PublicHolidays/2024/FR';
-
-            // Formatage de la date au format 'Y-m-d' pour la requête API
-            $formattedDate = $date->format('Y-m-d');
-
-            // Envoie de la requête à l'API
-            $response = file_get_contents($apiUrl);
-
-            // Analyse de la réponse JSON
-            $holidays = json_decode(
-                $response,
-                true
-            );
-
-            // Vérification si la date est un jour férié
-            foreach ($holidays as $holiday) {
-                if ($holiday['date'] === $formattedDate) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        // Supprime les jours de congé de l'utilisateur en prenant en compte les jours ouvrables
-        $user = $vacation->getUser();
-
-        // Récupère le nombre de jours de congé demandés par l'utilisateur grâce aux dates
-        $startDate = $vacation->getStartDate();
-        $endDate = $vacation->getEndDate();
-        $nbDays = getWorkingDaysBetweenDates($startDate, $endDate);
-
-        // Récupère le nombre de jours de congé restant de l'utilisateur dans NumberDayOffRepository
-        $numberDayOff = $numberDayOffRepository->findOneBy(['userDay' => $user]);
-
-        // Récupère le nombre de jours de congé restant de l'utilisateur
-        $nbDaysAvailable = $numberDayOff->getAvailable();
-
-        // Soustrait le nombre de jours de congé demandés par l'utilisateur au nombre de jours de congé restant de l'utilisateur
-        $numberDayOff->setAvailable($nbDaysAvailable - $nbDays);
-
-        // Enregistre le nombre de jours de congé restant de l'utilisateur
-        $manager->persist($numberDayOff);
 
         // Enregistrer la demande de congé
         $manager->persist($vacation);
@@ -190,5 +142,85 @@ class LeaveManagementController extends AbstractController
 
         // Rediriger vers la page de gestion des congés
         return $this->redirectToRoute('app_leave_management');
+    }
+
+    #[IsGranted('ROLE_USER')]
+    #[Route('/user/generate-document/{id}', name: 'app_generate_document')]
+    public function generateDocument(
+        Pdf $pdfGenerator,
+        $id,
+        Security $security,
+        CompanyRepository $companyRepository,
+        VacationRepository $vacationRepository
+    ): Response {
+        // Récupérer l'utilisateur actuellement authentifié
+        $user = $security->getUser();
+
+        // Récupérer logo de l'entreprise
+        $logo = $companyRepository->findOneBy(['id' => $user])->getCompanyLogoFile();
+
+
+        // Récupérez les données nécessaires pour le document à partir de l'utilisateur
+        $documentData = [
+            'vacation' => $vacationRepository->findOneBy(['id' => $id]),
+            'company' => $companyRepository->findOneBy(['id' => $user]),
+            'user' => $user,
+            'logo' => $logo,
+        ];
+
+        // Générer le contenu du document PDF en utilisant un modèle Twig
+        $pdfContent = $this->generatePdfContent($pdfGenerator, 'document_template.html.twig', $documentData);
+
+        // Sauvegarder le fichier PDF sur le serveur
+        $pdfFilePath = $this->savePdfToFile($pdfContent, 'Demande_de_congé.pdf');
+
+        // Envoyer le fichier PDF en réponse
+        return $this->sendPdfResponse($pdfFilePath);
+
+        // Rediriger vers la page de gestion des congés
+        return $this->redirectToRoute('app_leave_management');
+    }
+
+    private function generatePdfContent(Pdf $pdfGenerator, string $template, array $data): string
+    {
+        // Rendre le template Twig avec les données fournies
+        $htmlContent = $this->renderView($template, $data);
+
+        // Utiliser le service Knp\Snappy\Pdf pour générer le PDF à partir du HTML
+        return $pdfGenerator->getOutputFromHtml($htmlContent);
+    }
+
+    private function savePdfToFile(string $pdfContent, string $filename): string
+    {
+        // Spécifier le répertoire où vous souhaitez sauvegarder les fichiers PDF
+        $pdfDirectory = $this->getParameter('kernel.project_dir') . '/public/pdf/';
+
+        // Concaténer le répertoire avec le nom du fichier
+        $pdfFilePath = $pdfDirectory . $filename;
+
+        // Assurez-vous que le répertoire existe
+        if (!file_exists($pdfDirectory)) {
+            mkdir($pdfDirectory, 0755, true);
+        }
+
+        // Sauvegarder le contenu du PDF dans un fichier
+        file_put_contents($pdfFilePath, $pdfContent);
+
+        return $pdfFilePath;
+    }
+
+
+    private function sendPdfResponse(string $pdfFilePath): Response
+    {
+        // Créer une réponse avec le fichier PDF
+        $response = new Response(file_get_contents($pdfFilePath));
+
+        // Spécifier le type de contenu
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        // Spécifier le nom du fichier lors du téléchargement
+        $response->headers->set('Content-Disposition', 'attachment; filename="generated_document.pdf"');
+
+        return $response;
     }
 }

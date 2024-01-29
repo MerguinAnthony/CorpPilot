@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\SetUserType;
+use App\Repository\CompanyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,8 @@ class ProfileController extends AbstractController
         Security $security,
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        CompanyRepository $companyRepository
     ): Response {
         $currentUser = $security->getUser();
 
@@ -54,7 +56,7 @@ class ProfileController extends AbstractController
 
         return $this->render('pages/profile/index.html.twig', [
             'form' => $form->createView(),
-            'companyAbrev' => $this->getParameter('company_abrev'),
+            'company' => $companyRepository->findOneBy(['id' => $currentUser]),
             'currentUser' => $currentUser,
         ]);
     }

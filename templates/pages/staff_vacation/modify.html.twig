@@ -1,61 +1,134 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StaffVacationController!{% endblock %}
-
+{% block title %}Modification de congés{% endblock %}
 {% block body %}
+<div id="desktopNav" style="display: none;">
+    {% include "partials/_desktopNav.html.twig" %}
+</div>
 <div class="container">
-    <section class="headerStaff">
-        <div class="row mt-4">
-            <div class="col-4"></div>
-            <div class="col-4 text-center"> <!-- Ajout de la classe text-center pour centrer le blason -->
-                <img src="{{ asset('assets/svg/blason.svg') }}" width="100" alt="Blason de la ville de deyvillers">
-            </div>
-            <div class="col-4 d-flex justify-content-end"> <!-- Ajout de la classe text-right pour aligner à droite -->
-                <a href="{{ path('app_logout') }}">
-                    <img src="{{ asset('assets/svg/logout.svg') }}" alt="Déconnexion">
-                </a>
-            </div>
-        </div>
-    </section>
-    {% if currentUser %}
-        <div class="row mt-4">
-            <div class="col-6 d-flex justify-content-center">
-                <img src="{{ asset('assets/Img/69944235142__78B07BD1-5790-446E-8015-0A4866FD84B1.png') }}" alt="Photo de profil{{ currentUser.lastName }} {{ currentUser.firstName }}" width="100" class="rounded-circle">
-            </div>
-            <div class="col-6">
-                <div class="row">
-                    <div class="col-12 ff-3 fs-3">
-                        <p class="p-0 my-3 ">{{ currentUser.lastName }} {{ currentUser.firstName }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <p>{{ currentUser.job }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
+    {% include "partials/_headerStaff.html.twig" %}
+    <div id="phoneUser" style="display: none;">
+        {% include "partials/_currentUser.html.twig" %}
+    </div>
     <div class="row mt-4">
         <div class="col-12">
             <h1 class="text-center">Modification de congés</h1>
         </div>
     </div>
-    <section class="formVacModif">
+    <div class="row">
+    <!-- formulaire -->
+        <div class="col-md-12 ">
+            <section class="formVac" id="col1">
         {{ form_start(form) }}
-            <div class="row d-flex justify-content-evenly">
-                <div class="col-4">
-                    {{ form_row(form.startDate) }}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center">Nouvelle demande</h2>
+                    </div>
+                    <div class="col-10 mx-auto">
+                    {{ form_row(form.account) }}
+                    </div>
                 </div>
-                <div class="col-4">
-                    {{ form_row(form.endDate) }}
+                <div class="row">
+                    <div class="col-5 mx-auto">
+                        {{ form_row(form.startDate) }}
+                    </div>
+                    <div class="col-5 mx-auto">
+                        {{ form_row(form.endDate) }}
+                    </div>
                 </div>
-            </div>
-            <div class="d-block text-center">
-                {{ form_row(form.submit) }}
+                <div class="row mt-4">
+                    <div class="col-5 mx-auto">
+                        {{ form_row(form.startHours) }}
+                    </div>
+                    <div class="col-5 mx-auto">
+                        {{ form_row(form.endHours) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 mx-auto">
+                        {{ form_row(form.submit) }}
+                    </div>
+                </div>
             </div>
         {{ form_end(form) }}
-    </section>
+        </section>  
+        </div>
+    </div>
 </div>
 {% include "partials/_phoneNav.html.twig" %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var vacationTypeSelect = document.getElementById('vacationType');
+    var formDaysDiv = document.getElementById('formDays');
+    var formHoursDiv = document.getElementById('formHours');
+
+    vacationTypeSelect.addEventListener('change', function() {
+        var selectedValue = vacationTypeSelect.value;
+
+        formDaysDiv.style.display = 'none';
+        formHoursDiv.style.display = 'none';
+
+        if (selectedValue === '1') {
+            formDaysDiv.style.display = 'block';
+        } else if (selectedValue === '2') {
+            formDaysDiv.style.display = 'block';
+        } else if (selectedValue === '3') {
+            formHoursDiv.classList.remove('d-none');
+            formHoursDiv.style.display = 'block';
+            document.querySelector('.hours').classList.remove('d-none');
+        }
+    });
+    
+
+    var columns; // Déclarer la variable columns en dehors des fonctions
+
+    function updatePage() {
+        var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+        // Décider quel menu afficher en fonction de la largeur de la fenêtre
+        if (windowWidth <= 768) {
+            document.getElementById('phoneNav').style.display = 'block';
+            document.getElementById('desktopNav').style.display = 'none';
+            document.getElementById('desktopUser').style.display = 'none';
+            document.getElementById('phoneUser').style.display = 'block';
+            document.getElementById('phonelogout').classList.remove('d-none');
+        } else {
+            document.getElementById('phoneNav').style.display = 'none';
+            document.getElementById('desktopNav').style.display = 'block';
+            document.getElementById('desktopUser').style.display = 'block';
+            document.getElementById('phoneUser').style.display = 'none';
+            document.getElementById('phonelogout').classList.add('d-none');
+            document.getElementById('desktoplogout').style.display = 'block';
+        }
+
+
+        // Récupérer dans une constante la col1
+        const col1 = document.getElementById('col1');
+        // Récupérer dans une constante la col2
+        const col2 = document.getElementById('col2');
+
+        // Définir quelle colonne à la height la plus grande
+        if (col1.offsetHeight > col2.offsetHeight) {
+            columns = col1.offsetHeight;
+        } else {
+            columns = col2.offsetHeight;
+        }
+
+        // Appliquer la height la plus grande aux deux colonnes
+        col1.style.height = columns + 'px';
+        col2.style.height = columns + 'px';
+
+
+    }
+
+    updatePage();
+
+    // Attacher le gestionnaire d'événements pour redimensionner la fenêtre
+    window.addEventListener('resize', updatePage);
+});
+
+
+
+</script>
 {% endblock %}

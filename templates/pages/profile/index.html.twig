@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un employé | {{ companyAbrev }}Gest{% endblock %}
+{% block title %}Modifier un employé | {{ company.companyAbrev }}{% endblock %}
 
 
 {% block body %}
@@ -8,20 +8,7 @@
     {% include "partials/_desktopNav.html.twig" %}
 </div>
 <div class="container">
-    <section class="headerStaff">
-        <div class="row mt-4 ">
-            <div id="desktopUser" class="col-4" style="display: none;">
-                {% include "partials/_currentUser.html.twig" %}
-            </div>
-            <div class="col-4"></div>
-            <div class="col-4 d-flex justify-content-center align-items-center">
-                <img src="{{ asset('assets/svg/blason.svg') }}" width="100" alt="Blason de la ville de deyvillers">
-            </div>
-            <div id="phonelogout" class="col-4 d-flex justify-content-end align-items-center">
-                {% include "partials/_logout.html.twig" %}
-            </div>
-        </div>
-    </section>
+    {% include "partials/_headerStaff.html.twig" %}
     <div id="phoneUser" style="display: none;">
         {% include "partials/_currentUser.html.twig" %}
     </div>
@@ -54,9 +41,8 @@
     {{ form_end(form) }}
 </div>
 
-<div id="phoneNav" style="display: none;">
     {% include "partials/_phoneNav.html.twig" %}
-</div>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

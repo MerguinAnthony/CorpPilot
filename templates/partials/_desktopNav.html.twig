@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{path('app_staff_vacation')}}">{{ companyAbrev }}Gest</a>
+    <a class="navbar-brand" href="{{path('app_staff_vacation')}}">{{ company.companyAbrev }}</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,7 +21,7 @@
             <li><a class="dropdown-item" href="{{path('app_leave_management')}}">Gestion des congés</a></li>
             <li><a class="dropdown-item" href="{{path('app_user')}}">Gestion des employés</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="{{path('company_profile_edit', {'id': company.id})}}">Modifier les informations de l'entreprise</a></li>
           </ul>
         </li>
         {% endif %}

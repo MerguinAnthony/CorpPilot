@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}s'incrire | Corppilot{% endblock %}
+
+
+{% block body %}
+<div class="btn-div">
+    <img src="{{asset('assets/Img/logo.png')}}" alt="Logo" width="60" height="66">
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <h1 class="text-center">S'incrire</h1>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <h2 class="text-center">Informations administateur</h2>
+    </div>
+</div>
+<div class="w-50 mx-auto">
+    {{ form(form) }}
+</div>
+<div class="btn-div">
+    <a class="btn btn-primary"href="{{path('app_home')}}">retour</a>
+</div>
+<div class="separator mt-4"></div>
+{% include "partials/_homeFooter.html.twig" %}
+{% endblock %}

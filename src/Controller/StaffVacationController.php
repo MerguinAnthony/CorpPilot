@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Vacation;
+use App\Form\VacationFormType;
+use App\Service\DaysBetweenDates;
 use App\Repository\UserRepository;
-use App\Form\VacationAvailableType;
-use App\Form\VacationHoursType;
+use App\Repository\CompanyRepository;
 use App\Repository\VacationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NumberDayOffRepository;
+use App\Service\DaysOutsidePeriod;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +20,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class StaffVacationController extends AbstractController
 {
+    private DaysBetweenDates $daysBetweenDates;
+    private DaysOutsidePeriod $daysOutsidePeriod;
+
+    public function __construct(
+        DaysBetweenDates $daysBetweenDates,
+        DaysOutsidePeriod $daysOutsidePeriod
+    ) {
+        $this->daysBetweenDates = $daysBetweenDates;
+        $this->daysOutsidePeriod = $daysOutsidePeriod;
+    }
+
     #[IsGranted('ROLE_USER')]
     #[Route('/staff/Demande-de-conges', name: 'app_staff_vacation')]
     public function index(
@@ -26,48 +39,45 @@ class StaffVacationController extends AbstractController
         VacationRepository $vacationRepository,
         NumberDayOffRepository $numberDayOffRepository,
         EntityManagerInterface $manager,
+        CompanyRepository $companyRepository,
         Request $request
     ): Response {
         $user = $security->getUser();
 
-        $formDays = $this->createForm(VacationAvailableType::class);
-        $formDays->handleRequest($request);
+        $form = $this->createForm(VacationFormType::class);
+        $form->handleRequest($request);
 
-
-        if ($formDays->isSubmitted() && $formDays->isValid()) {
-            $vacationData = $formDays->getData();
-
-            $vacation = new Vacation();
-            $vacation->setStartDate($vacationData['startDate']);
-            $vacation->setEndDate($vacationData['endDate']);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $vacation = $form->getData();
             $vacation->setApproved(0);
 
+            $startDate = $vacation->getStartDate();
+            $endDate = $vacation->getEndDate();
+            $nbDays = $this->daysBetweenDates->getWorkingDaysBetweenDates($startDate, $endDate);
+
+            // Si le congé est de type "1", on calcule le nombre de jours en dehors de la période
+            if ($vacation->getAccount() == 1) {
+                $nbDaysOutsidePeriod = $this->daysOutsidePeriod->getWorkingDaysOutsidePeriod($startDate, $endDate);
+                $vacation->setNbDaysOutsidePeriod($nbDaysOutsidePeriod - $nbDays);
+            }
+
+            // Si le congé est de type "3", on calcule le nombre d'heures en calculant la différence entre les deux datetime
+            if ($vacation->getAccount() == 3) {
+                $startHours = $vacation->getStartHours();
+                $endHours = $vacation->getEndHours();
+
+                // Calculer la différence en minutes
+                $interval = $endHours->diff($startHours);
+                $nbHours = $interval->h + ($interval->i / 60); // Convertir les minutes en heures décimales
+                $vacation->setNbHours($nbHours);
+            }
+
+
+            $vacation->setNbDays($nbDays);
             $vacation->setUser($user);
 
             $manager->persist($vacation);
             $manager->flush();
-            $this->addFlash('success', 'Votre demande de congés a été enregistrée avec succès.');
-
-            return $this->redirectToRoute('app_staff_vacation');
-        }
-
-        $formHours = $this->createForm(VacationHoursType::class);
-        $formHours->handleRequest($request);
-
-        if ($formHours->isSubmitted() && $formHours->isValid()) {
-            $vacationData = $formHours->getData();
-
-            $vacation = new Vacation();
-            $vacation->setStartHours($vacationData['startHours']);
-            $vacation->setEndHours($vacationData['endHours']);
-            $vacation->setApproved(0);
-
-            $vacation->setUser($user);
-
-
-            $manager->persist($vacation);
-            $manager->flush();
-
             $this->addFlash('success', 'Votre demande de congés a été enregistrée avec succès.');
 
             return $this->redirectToRoute('app_staff_vacation');
@@ -76,61 +86,67 @@ class StaffVacationController extends AbstractController
         return $this->render('pages/staff_vacation/index.html.twig', [
             'users' => $userRepository->findAll(),
             'currentUser' => $user,
-            'formDays' => $formDays->createView(),
-            'formHours' => $formHours->createView(),
+            'form' => $form->createView(),
             'vacations' => $vacationRepository->findBy(['user' => $user]),
             'dayVacations' => $numberDayOffRepository->findBy(['userDay' => $user]),
-            'companyAbrev' => $this->getParameter('company_abrev'),
+            'company' => $companyRepository->findOneBy(['id' => $user]),
         ]);
     }
 
     #[IsGranted('ROLE_USER')]
     #[Route('/staff/vacation/{id}/modify', name: 'app_staff_vacation_modify')]
     public function modify(
+        int $id,
         UserRepository $userRepository,
         Security $security,
         Vacation $vacation,
         Request $request,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        CompanyRepository $companyRepository,
     ): Response {
-        // Récupérer l'utilisateur actuellement authentifié
+
         $user = $security->getUser();
 
-        // Créer un formulaire de demande de congés
-        $form = $this->createForm(VacationAvailableType::class, $vacation);
+        $form = $this->createForm(VacationFormType::class, $vacation);
         $form->handleRequest($request);
 
-        // Vérifier si le formulaire a été soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer les données du formulaire
-            $vacationData = $form->getData();
-
-            // Créer une nouvelle instance de l'entité Vacation
-            $vacation->setStartDate($vacationData['startDate']);
-            $vacation->setEndDate($vacationData['endDate']);
+            $vacation = $form->getData();
             $vacation->setApproved(0);
 
-            // Associer l'utilisateur actuel à la demande de congés
+            $startDate = $vacation->getStartDate();
+            $endDate = $vacation->getEndDate();
+            $nbDays = $this->daysBetweenDates->getWorkingDaysBetweenDates($startDate, $endDate);
+
+            // Si le congé est de type "1", on calcule le nombre de jours en dehors de la période
+            if ($vacation->getAccount() == 1) {
+                $nbDaysOutsidePeriod = $this->daysOutsidePeriod->getWorkingDaysOutsidePeriod($startDate, $endDate);
+                $vacation->setNbDaysOutsidePeriod($nbDaysOutsidePeriod - $nbDays);
+            }
+
+            // Si le congé est de type "3", on calcule le nombre d'heures
+            if ($vacation->getAccount() == 3) {
+                $startHours = $vacation->getStartHours();
+                $endHours = $vacation->getEndHours();
+                $nbHours = $endHours->diff($startHours)->format('%h');
+                $vacation->setNbHours($nbHours);
+            }
+            $vacation->setNbDays($nbDays);
             $vacation->setUser($user);
 
-            // Enregistrer dans la base de données
             $manager->persist($vacation);
             $manager->flush();
-
-            // Ajouter une notification ou un message de succès
             $this->addFlash('success', 'Votre demande de congés a été modifiée avec succès.');
 
-            // Rediriger après envoi du formulaire
-            return $this->redirectToRoute('app_staff_vacation'); // Remplacez par la route de votre choix
+            return $this->redirectToRoute('app_staff_vacation');
         }
 
-        // Passer les informations de l'utilisateur et le formulaire à la vue
         return $this->render('pages/staff_vacation/modify.html.twig', [
-            'controller_name' => 'StaffVacationController',
             'users' => $userRepository->findAll(),
             'currentUser' => $user,
             'form' => $form->createView(),
             'vacation' => $vacation,
+            'company' => $companyRepository->findOneBy(['id' => $user]),
         ]);
     }
 
@@ -141,84 +157,14 @@ class StaffVacationController extends AbstractController
         EntityManagerInterface $manager,
         NumberDayOffRepository $numberDayOffRepository
     ): Response {
-        // Fonction pour calculer le nombre de jours ouvrables entre deux dates
-        function getWorkingDaysBetweenDates($startDate, $endDate)
-        {
-            $workingDays = 0;
-
-            $currentDate = clone $startDate;
-
-            while ($currentDate <= $endDate) {
-                // Exclure les samedis, dimanches et jours fériés
-                if ($currentDate->format('N') < 6 && !isHoliday($currentDate)) {
-                    $workingDays++;
-                }
-
-                $currentDate->modify('+1 day');
-            }
-
-            return $workingDays;
+        if ($vacation->getApproved() == 1) {
+            $this->addFlash('danger', 'Vous ne pouvez pas supprimer une demande de congés validée.');
+            return $this->redirectToRoute('app_staff_vacation');
+        } else {
+            $manager->remove($vacation);
+            $manager->flush();
+            $this->addFlash('success', 'Votre demande de congés a été supprimée avec succès.');
+            return $this->redirectToRoute('app_staff_vacation');
         }
-
-        // Fonction pour vérifier si une date est un jour férié
-        function isHoliday($date)
-        {
-            // Récupère l'année de la date
-            $year = $date->format('Y');
-
-            // Récupère l'URL de l'API
-            $apiUrl = 'https://date.nager.at/api/v3/PublicHolidays/' . $year . '/FR';
-
-            // Formatage de la date au format 'Y-m-d' pour la requête API
-            $formattedDate = $date->format('Y-m-d');
-
-            // Envoie de la requête à l'API
-            $response = file_get_contents($apiUrl);
-
-            // Analyse de la réponse JSON
-            $holidays = json_decode(
-                $response,
-                true
-            );
-
-            // Vérification si la date est un jour férié
-            foreach ($holidays as $holiday) {
-                if ($holiday['date'] === $formattedDate) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        // Supprime les jours de congé de l'utilisateur en prenant en compte les jours ouvrables
-        $user = $vacation->getUser();
-
-        // Récupère le nombre de jours de congé demandés par l'utilisateur grâce aux dates
-        $startDate = $vacation->getStartDate();
-        $endDate = $vacation->getEndDate();
-        $nbDays = getWorkingDaysBetweenDates($startDate, $endDate);
-
-        // Récupère le nombre de jours de congé restant de l'utilisateur dans NumberDayOffRepository
-        $numberDayOff = $numberDayOffRepository->findOneBy(['userDay' => $user]);
-
-        // Récupère le nombre de jours de congé restant de l'utilisateur
-        $nbDaysAvailable = $numberDayOff->getAvailable();
-
-        // Soustrait le nombre de jours de congé demandés par l'utilisateur au nombre de jours de congé restant de l'utilisateur
-        $numberDayOff->setAvailable($nbDaysAvailable + $nbDays);
-
-        // Enregistre le nombre de jours de congé restant de l'utilisateur
-        $manager->persist($numberDayOff);
-
-        // Supprimer la demande de congés
-        $manager->remove($vacation);
-        $manager->flush();
-
-        // Ajouter une notification ou un message de succès
-        $this->addFlash('success', 'Votre demande de congés a été supprimée avec succès.');
-
-        // Rediriger après envoi du formulaire
-        return $this->redirectToRoute('app_staff_vacation');
     }
 }

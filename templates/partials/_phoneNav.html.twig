@@ -1,11 +1,24 @@
-<nav class="navbar-mobile  mt-4">
-    <a href="{{path ('app_staff_vacation')}}" class="nav-link">
-        <img src="{{asset ('/assets/svg/horloge.svg')}}" alt="Home">
-    </a>
-    <a href="#" class="nav-link">
-        <img src="{{asset ('/assets/svg/calendrier.svg')}}" alt="Home">
-    </a>
-    <a href="#" class="nav-link">
-        <img src="{{asset ('/assets/svg/doc.svg')}}" alt="Home">
-    </a>
-</nav>
+<div id="phoneNav" style="display: none;">
+    <nav class="navbar-mobile mt-4">
+        <a href="{{ path('app_staff_vacation') }}" class="nav-link">
+            <img src="{{ asset('/assets/svg/horloge.svg') }}" alt="demande de congé">
+        </a>
+        <a href="{{ path('app_profile') }}" class="nav-link">
+            <img src="{{ asset('/assets/svg/profil.svg') }}" alt="profil">
+        </a>
+
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="nav-item dropdown dropup">
+            <a href="#" class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{{ asset('/assets/svg/gest.svg') }}" alt="gestion">
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ path('app_leave_management') }}">Gestion des congés</a></li>
+                <li><a class="dropdown-item" href="{{ path('app_user') }}">Gestion des employés</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('company_profile_edit', {'id': company.id}) }}">Modifier les informations de l'entreprise</a></li>
+            </ul>
+        </div>
+        {% endif %}
+    </nav>
+</div>

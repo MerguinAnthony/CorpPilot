@@ -2,11 +2,8 @@
 
 namespace App\DataFixtures;
 
-use Faker\Factory;
 use App\Entity\User;
-use Faker\Generator;
-use DateTimeImmutable;
-use App\Entity\Vacation;
+use App\Entity\Company;
 use App\Entity\NumberDayOff;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,86 +11,82 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-    private UserPasswordHasherInterface $hasher;
-    private Generator $faker;
-
-    public function __construct(UserPasswordHasherInterface $hasher)
+    private UserPasswordHasherInterface $passwordHasher;
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
-        $this->hasher = $hasher;
-        $this->faker = Factory::create('fr_FR');
+        $this->passwordHasher = $passwordHasher;
     }
 
     public function load(ObjectManager $manager): void
     {
-        $users = []; // Initialisation du tableau
+        $company = new Company();
+        $company->setCompanyName('Mairie de Deyvillers');
+        $company->setCompanyAbrev('Deyvi');
+        $company->setCompanyAddress('2 Rue de Lorraine');
+        $company->setCompanyCity('Deyvillers');
+        $company->setCompanyZipCode('88000');
+        $company->setCompanyPhone('0329340870');
+        $company->setCompanyEmail('contact@deyvillers.fr');
+        $company->setCompanySiret(1910172272363638);
+        $company->setCreatedAt(new \DateTimeImmutable('now'));
+        $manager->persist($company);
 
-        // Création d'un utilisateur administrateur
-        $adminUser = new User();
-        $adminUser->setEmail('contact@amerguin.fr');
-        $adminUser->setRoles(['ROLE_ADMIN']);
-        $adminUser->setFirstName('Anthony');
-        $adminUser->setLastName('MERGUIN');
-        $adminUser->setPhone('0601331080');
-        $adminUser->setAdress('34 rue de la mairie');
-        $adminUser->setCity('Biffontaine');
-        $adminUser->setZipCode('88430');
-        $adminUser->setBirthday(new \DateTimeImmutable('1991-03-27'));
-        $adminUser->setSocialSecurity(1910322483915);
-        $adminUser->setJob('Développeur Web');
-        $adminUser->setPassword('Am270391');
-        $adminUser->setCreatedAt(new DateTimeImmutable());
-        $manager->persist($adminUser);
+        $manager->flush();
 
-        // Création de plusieurs utilisateurs normaux
-        for ($i = 0; $i < 4; $i++) {
+        $user = new User();
+        $user->setEmail('contact@amerguin.fr');
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setPassword($this->passwordHasher->hashPassword(
+            $user,
+            'password'
+        ));
+        $user->setFirstName('Anthony');
+        $user->setLastName('Merguin');
+        $user->setBirthday(new \DateTimeImmutable(1991 - 27 - 03));
+        $user->setAdress('1 rue de la mairie');
+        $user->setCity('Biffontaine');
+        $user->setZipCode('88430');
+        $user->setPhone('0601331080');
+        $user->setSocialSecurity('1910391080001');
+        $user->setJob('Développeur Web');
+        $user->setCreatedAt(new \DateTimeImmutable('now'));
+        $user->setUpdatedAt(new \DateTimeImmutable('now'));
+        $user->setCompany($company);
+
+        $numberDayOff = new NumberDayOff();
+        $numberDayOff->setAvailable(10);
+        $numberDayOff->setCet(5);
+        $numberDayOff->setHoursAvailable(20.5);
+        $numberDayOff->setUserDay($user);
+        $manager->persist($numberDayOff);
+
+        for ($i = 0; $i < 5; $i++) {
             $user = new User();
-            $user->setEmail($this->faker->email);
+            $user->setEmail('contact' . $i . '@amerguin.fr');
             $user->setRoles(['ROLE_USER']);
-            $user->setFirstName($this->faker->firstName);
-            $user->setLastName($this->faker->lastName);
+            $user->setPassword($this->passwordHasher->hashPassword(
+                $user,
+                'password'
+            ));
+            $user->setFirstName('Anthony');
+            $user->setLastName('Merguin');
+            $user->setBirthday(new \DateTimeImmutable('1991-03-27')); // Corrected date format
+            $user->setAdress('1 rue de la mairie');
+            $user->setCity('Biffontaine');
+            $user->setZipCode('88430');
             $user->setPhone('0601331080');
-            $user->setAdress($this->faker->streetAddress);
-            $user->setCity($this->faker->city);
-            $user->setZipCode($this->faker->postcode);
-            $user->setBirthday(new \DateTimeImmutable('1991-03-27'));
-            $user->setSocialSecurity($this->faker->numberBetween(1000000000000, 9999999999999));
-            $user->setJob($this->faker->jobTitle);
-            $user->setPassword('password');
-            $user->setCreatedAt(new \DateTimeImmutable());
+            $user->setSocialSecurity('1910391080001');
+            $user->setJob('Développeur');
+            $user->setCreatedAt(new \DateTimeImmutable('now'));
+            $user->setUpdatedAt(new \DateTimeImmutable('now'));
+            $user->setCompany($company);
             $manager->persist($user);
-        }
 
-        $manager->flush();
-
-        // Récupération des IDs après le flush
-        $users = array_map(function ($user) {
-            return $user->getId();
-        }, [$adminUser, ...$manager->getRepository(User::class)->findAll()]);
-
-
-        for ($va = 0; $va < 10; $va++) {
-            // Créez une nouvelle vacation
-            $vacation = new Vacation();
-            $vacation->setStartDate($this->faker->dateTimeBetween('-1 years', 'now'));
-            $vacation->setEndDate($this->faker->dateTimeBetween('now', '+1 years'));
-            $vacation->setApproved($this->faker->boolean);
-            $vacation->setUser($user = $manager->getRepository(User::class)->find($this->faker->randomElement($users)));
-
-            $manager->persist($vacation);
-        }
-        $manager->flush();
-
-        // Création de plusieurs congés
-        // Récupération des utilisateurs après le flush
-        $users = $manager->getRepository(User::class)->findAll();
-
-        foreach ($users as $user) {
             $numberDayOff = new NumberDayOff();
-            $numberDayOff->setAvailable($this->faker->numberBetween(0, 25));
-            $numberDayOff->setCet($this->faker->numberBetween(0, 50));
-            $numberDayOff->setHoursAvailable($this->faker->randomFloat(2, 0, 100));
+            $numberDayOff->setAvailable(10);
+            $numberDayOff->setCet(5);
+            $numberDayOff->setHoursAvailable(20.5);
             $numberDayOff->setUserDay($user);
-
             $manager->persist($numberDayOff);
         }
 

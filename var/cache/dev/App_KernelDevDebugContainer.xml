@@ -25,8 +25,10 @@
       <parameter key="SecurityBundle">Symfony\Bundle\SecurityBundle\SecurityBundle</parameter>
       <parameter key="MonologBundle">Symfony\Bundle\MonologBundle\MonologBundle</parameter>
       <parameter key="MakerBundle">Symfony\Bundle\MakerBundle\MakerBundle</parameter>
-      <parameter key="DoctrineFixturesBundle">Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle</parameter>
       <parameter key="VichUploaderBundle">Vich\UploaderBundle\VichUploaderBundle</parameter>
+      <parameter key="DoctrineFixturesBundle">Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle</parameter>
+      <parameter key="KarserRecaptcha3Bundle">Karser\Recaptcha3Bundle\KarserRecaptcha3Bundle</parameter>
+      <parameter key="KnpSnappyBundle">Knp\Bundle\SnappyBundle\KnpSnappyBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -77,27 +79,25 @@
         <parameter key="path">/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/symfony/maker-bundle/src</parameter>
         <parameter key="namespace">Symfony\Bundle\MakerBundle</parameter>
       </parameter>
-      <parameter key="DoctrineFixturesBundle" type="collection">
-        <parameter key="path">/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/doctrine/doctrine-fixtures-bundle</parameter>
-        <parameter key="namespace">Doctrine\Bundle\FixturesBundle</parameter>
-      </parameter>
       <parameter key="VichUploaderBundle" type="collection">
         <parameter key="path">/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/vich/uploader-bundle</parameter>
         <parameter key="namespace">Vich\UploaderBundle</parameter>
       </parameter>
+      <parameter key="DoctrineFixturesBundle" type="collection">
+        <parameter key="path">/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/doctrine/doctrine-fixtures-bundle</parameter>
+        <parameter key="namespace">Doctrine\Bundle\FixturesBundle</parameter>
+      </parameter>
+      <parameter key="KarserRecaptcha3Bundle" type="collection">
+        <parameter key="path">/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/karser/karser-recaptcha3-bundle</parameter>
+        <parameter key="namespace">Karser\Recaptcha3Bundle</parameter>
+      </parameter>
+      <parameter key="KnpSnappyBundle" type="collection">
+        <parameter key="path">/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/knplabs/knp-snappy-bundle/src</parameter>
+        <parameter key="namespace">Knp\Bundle\SnappyBundle</parameter>
+      </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">App_KernelDevDebugContainer</parameter>
-    <parameter key="company_creat">AMerguin</parameter>
-    <parameter key="company_name">Mairie de Deyvillers</parameter>
-    <parameter key="company_city">Deyvillers</parameter>
-    <parameter key="company_address">2 Rue de Lorraine</parameter>
-    <parameter key="company_zipcode" type="string">88000</parameter>
-    <parameter key="company_phone" type="string">0329340870</parameter>
-    <parameter key="company_email">contact@deyvillers.fr</parameter>
-    <parameter key="company_abrev">Deyvi</parameter>
-    <parameter key="company_blazon">changer public/assets/svg/blason.svg</parameter>
-    <parameter key="company_paysage">changer public/assets/Img/img_hero.jpg</parameter>
     <parameter key="event_dispatcher.event_aliases" type="collection">
       <parameter key="Symfony\Component\Console\Event\ConsoleCommandEvent">console.command</parameter>
       <parameter key="Symfony\Component\Console\Event\ConsoleErrorEvent">console.error</parameter>
@@ -234,6 +234,7 @@
     <parameter key="twig.form.resources" type="collection">
       <parameter>@VichUploader/Form/fields.html.twig</parameter>
       <parameter>form_div_layout.html.twig</parameter>
+      <parameter>@KarserRecaptcha3/Form/karser_recaptcha3_widget.html.twig</parameter>
     </parameter>
     <parameter key="twig.default_path">/Users/anthonymerguin/Documents/projet/CorpPilot/templates</parameter>
     <parameter key="web_profiler.debug_toolbar.intercept_redirects">false</parameter>
@@ -246,6 +247,7 @@
     <parameter key="security.firewalls" type="collection">
       <parameter>dev</parameter>
       <parameter>main</parameter>
+      <parameter>secured_area</parameter>
     </parameter>
     <parameter key="security.logout_uris" type="collection"/>
     <parameter key="monolog.use_microseconds">true</parameter>
@@ -284,8 +286,51 @@
         </parameter>
         <parameter key="db_driver">orm</parameter>
       </parameter>
+      <parameter key="company_logo_image" type="collection">
+        <parameter key="uri_prefix">/assets/Img/company_logo</parameter>
+        <parameter key="upload_destination">/Users/anthonymerguin/Documents/projet/CorpPilot/public/assets/Img/company_logo</parameter>
+        <parameter key="namer" type="collection">
+          <parameter key="service">Vich\UploaderBundle\Naming\SmartUniqueNamer.company_logo_image</parameter>
+          <parameter key="options" type="collection"/>
+        </parameter>
+        <parameter key="inject_on_load">false</parameter>
+        <parameter key="delete_on_update">true</parameter>
+        <parameter key="delete_on_remove">true</parameter>
+        <parameter key="directory_namer" type="collection">
+          <parameter key="service">null</parameter>
+          <parameter key="options">null</parameter>
+        </parameter>
+        <parameter key="db_driver">orm</parameter>
+      </parameter>
+      <parameter key="signature_image" type="collection">
+        <parameter key="uri_prefix">/assets/Img/signature</parameter>
+        <parameter key="upload_destination">/Users/anthonymerguin/Documents/projet/CorpPilot/public/assets/Img/signature</parameter>
+        <parameter key="namer" type="collection">
+          <parameter key="service">Vich\UploaderBundle\Naming\SmartUniqueNamer.signature_image</parameter>
+          <parameter key="options" type="collection"/>
+        </parameter>
+        <parameter key="inject_on_load">false</parameter>
+        <parameter key="delete_on_update">true</parameter>
+        <parameter key="delete_on_remove">true</parameter>
+        <parameter key="directory_namer" type="collection">
+          <parameter key="service">null</parameter>
+          <parameter key="options">null</parameter>
+        </parameter>
+        <parameter key="db_driver">orm</parameter>
+      </parameter>
     </parameter>
     <parameter key="vich_uploader.file_injector.class">Vich\UploaderBundle\Injector\FileInjector</parameter>
+    <parameter key="karser_recaptcha3.site_key">%env(RECAPTCHA3_KEY)%</parameter>
+    <parameter key="karser_recaptcha3.secret_key">%env(RECAPTCHA3_SECRET)%</parameter>
+    <parameter key="karser_recaptcha3.score_threshold">0.5</parameter>
+    <parameter key="karser_recaptcha3.enabled">true</parameter>
+    <parameter key="karser_recaptcha3.host">www.google.com</parameter>
+    <parameter key="knp_snappy.pdf.binary">/usr/local/bin/wkhtmltopdf</parameter>
+    <parameter key="knp_snappy.pdf.options" type="collection"/>
+    <parameter key="knp_snappy.pdf.env" type="collection"/>
+    <parameter key="knp_snappy.image.binary">/usr/local/bin/wkhtmltoimage</parameter>
+    <parameter key="knp_snappy.image.options" type="collection"/>
+    <parameter key="knp_snappy.image.env" type="collection"/>
     <parameter key="data_collector.templates" type="collection">
       <parameter key="data_collector.request" type="collection">
         <parameter>request</parameter>
@@ -395,6 +440,14 @@
     <service id="App\Entity" class="App\Entity" abstract="true">
       <tag name="container.excluded" source="in &quot;config/services.yaml&quot;"/>
     </service>
+    <service id="App\Controller\CompanyProfileController" class="App\Controller\CompanyProfileController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <argument type="service" id="security.user_password_hasher"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.jUv.zyj.App\Controller\CompanyProfileController"/>
+      </call>
+    </service>
     <service id="App\Controller\HomeController" class="App\Controller\HomeController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -407,6 +460,13 @@
       <tag name="container.service_subscriber"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.jUv.zyj.App\Controller\LeaveManagementController"/>
+      </call>
+    </service>
+    <service id="App\Controller\LegalController" class="App\Controller\LegalController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.jUv.zyj.App\Controller\LegalController"/>
       </call>
     </service>
     <service id="App\Controller\ProfileController" class="App\Controller\ProfileController" public="true" autowire="true" autoconfigure="true">
@@ -426,6 +486,8 @@
     <service id="App\Controller\StaffVacationController" class="App\Controller\StaffVacationController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
+      <argument type="service" id="App\Service\DaysBetweenDates"/>
+      <argument type="service" id="App\Service\DaysOutsidePeriod"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.jUv.zyj.App\Controller\StaffVacationController"/>
       </call>
@@ -442,19 +504,27 @@
       <tag name="doctrine.fixture.orm"/>
       <argument type="service" id="security.user_password_hasher"/>
     </service>
+    <service id="App\Form\CompanyType" class="App\Form\CompanyType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
     <service id="App\Form\SetUserType" class="App\Form\SetUserType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
     <service id="App\Form\UserType" class="App\Form\UserType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
-    <service id="App\Form\VacationAvailableType" class="App\Form\VacationAvailableType" autowire="true" autoconfigure="true">
+    <service id="App\Form\VacationFormType" class="App\Form\VacationFormType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
-    <service id="App\Form\VacationHoursType" class="App\Form\VacationHoursType" autowire="true" autoconfigure="true">
-      <tag name="form.type"/>
+    <service id="App\Repository\CompanyRepository" class="App\Repository\CompanyRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\NumberDayOffRepository" class="App\Repository\NumberDayOffRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\SignIdRepository" class="App\Repository\SignIdRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -465,6 +535,25 @@
     <service id="App\Repository\VacationRepository" class="App\Repository\VacationRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Services\DayOutsidePeriod" class="App\Services\DayOutsidePeriod" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="The autoloader expected class &quot;App\Services\DayOutsidePeriod&quot; to be defined in file &quot;/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/composer/../../src/Services/DayOutsidePeriod.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+    </service>
+    <service id="App\Services\DaysBetweenDates" class="App\Services\DaysBetweenDates" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="The autoloader expected class &quot;App\Services\DaysBetweenDates&quot; to be defined in file &quot;/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/composer/../../src/Services/DaysBetweenDates.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+    </service>
+    <service id="App\Services\IsHoliday" class="App\Services\IsHoliday" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="The autoloader expected class &quot;App\Services\IsHoliday&quot; to be defined in file &quot;/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/composer/../../src/Services/IsHoliday.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+    </service>
+    <service id="App\Twig\CustomFiltersExtension" class="App\Twig\CustomFiltersExtension" autowire="true" autoconfigure="true">
+      <tag name="twig.extension"/>
+    </service>
+    <service id="App\Service\DaysBetweenDates" class="App\Service\DaysBetweenDates" autowire="true" autoconfigure="true">
+      <argument type="service" id="App\Service\IsHoliday"/>
+    </service>
+    <service id="App\Service\IsHoliday" class="App\Service\IsHoliday" autowire="true" autoconfigure="true"/>
+    <service id="App\Service\DaysOutsidePeriod" class="App\Service\DaysOutsidePeriod" autowire="true" autoconfigure="true">
+      <argument type="service" id="App\Service\DaysBetweenDates"/>
     </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="argument_resolver.backed_enum_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver">
@@ -493,7 +582,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.nG61dgq"/>
+      <argument type="service" id=".service_locator.itsoJoP"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -636,6 +725,7 @@
         <argument key="cache.security_is_granted_attribute_expression_language" type="service" id="cache.security_is_granted_attribute_expression_language" on-invalid="ignore_uninitialized"/>
         <argument key="debug.security.firewall" type="service" id="debug.security.firewall" on-invalid="ignore_uninitialized"/>
         <argument key="debug.security.firewall.authenticator.main" type="service" id="debug.security.firewall.authenticator.main" on-invalid="ignore_uninitialized"/>
+        <argument key="debug.security.firewall.authenticator.secured_area" type="service" id="debug.security.firewall.authenticator.secured_area" on-invalid="ignore_uninitialized"/>
         <argument key="monolog.handler.main" type="service" id="monolog.handler.main" on-invalid="ignore_uninitialized"/>
         <argument key="monolog.handler.console" type="service" id="monolog.handler.console" on-invalid="ignore_uninitialized"/>
         <argument key=".debug.http_client" type="service" id=".debug.http_client" on-invalid="ignore_uninitialized"/>
@@ -724,6 +814,9 @@
           <argument>reset</argument>
         </argument>
         <argument key="debug.security.firewall.authenticator.main" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="debug.security.firewall.authenticator.secured_area" type="collection">
           <argument>reset</argument>
         </argument>
         <argument key="monolog.handler.main" type="collection">
@@ -1056,7 +1149,7 @@
     <service id="console.command.event_dispatcher_debug" class="Symfony\Bundle\FrameworkBundle\Command\EventDispatcherDebugCommand">
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator._1SGciK"/>
+      <argument type="service" id=".service_locator.5_LkNY1"/>
       <call method="setName">
         <argument>debug:event-dispatcher</argument>
       </call>
@@ -1392,12 +1485,13 @@
         <argument>App\Form</argument>
         <argument>Symfony\Bridge\Doctrine\Form\Type</argument>
         <argument>Vich\UploaderBundle\Form\Type</argument>
+        <argument>Karser\Recaptcha3Bundle\Form</argument>
       </argument>
       <argument type="collection">
+        <argument>App\Form\CompanyType</argument>
         <argument>App\Form\SetUserType</argument>
         <argument>App\Form\UserType</argument>
-        <argument>App\Form\VacationAvailableType</argument>
-        <argument>App\Form\VacationHoursType</argument>
+        <argument>App\Form\VacationFormType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FormType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\ChoiceType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FileType</argument>
@@ -1405,6 +1499,7 @@
         <argument>Symfony\Bridge\Doctrine\Form\Type\EntityType</argument>
         <argument>Vich\UploaderBundle\Form\Type\VichFileType</argument>
         <argument>Vich\UploaderBundle\Form\Type\VichImageType</argument>
+        <argument>Karser\Recaptcha3Bundle\Form\Recaptcha3Type</argument>
       </argument>
       <argument type="collection">
         <argument>Symfony\Component\Form\Extension\Core\Type\TransformationFailureExtension</argument>
@@ -2440,6 +2535,8 @@
           <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/symfony/monolog-bundle/translations</argument>
           <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/symfony/maker-bundle/src/translations</argument>
           <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/doctrine/doctrine-fixtures-bundle/translations</argument>
+          <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/karser/karser-recaptcha3-bundle/translations</argument>
+          <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/knplabs/knp-snappy-bundle/src/translations</argument>
         </argument>
         <argument key="cache_vary" type="collection">
           <argument key="scanned_directories" type="collection">
@@ -2461,6 +2558,8 @@
             <argument>vendor/symfony/monolog-bundle/translations</argument>
             <argument>vendor/symfony/maker-bundle/src/translations</argument>
             <argument>vendor/doctrine/doctrine-fixtures-bundle/translations</argument>
+            <argument>vendor/karser/karser-recaptcha3-bundle/translations</argument>
+            <argument>vendor/knplabs/knp-snappy-bundle/src/translations</argument>
           </argument>
         </argument>
       </argument>
@@ -2634,6 +2733,7 @@
         <argument>NoSuspiciousCharacters</argument>
         <argument>UniqueEntity</argument>
         <argument>UserPassword</argument>
+        <argument>Recaptcha3</argument>
       </argument>
     </service>
     <service id="translation.reader" class="Symfony\Component\Translation\Reader\TranslationReader">
@@ -2828,6 +2928,14 @@
         <argument>kernel.response</argument>
         <argument type="collection">
           <argument type="service_closure" id="security.context_listener.0"/>
+          <argument>onKernelResponse</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.response</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.context_listener.1"/>
           <argument>onKernelResponse</argument>
         </argument>
         <argument>0</argument>
@@ -3382,7 +3490,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.nG61dgq"/>
+      <argument type="service" id=".service_locator.itsoJoP"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -3864,7 +3972,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
-      <argument type="service" id=".service_locator.gXfxE_u"/>
+      <argument type="service" id=".service_locator.8f_Y7fv"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -4006,7 +4114,7 @@
       <argument type="service" id="cache.validator"/>
     </service>
     <service id="validator.validator_factory" class="Symfony\Component\Validator\ContainerConstraintValidatorFactory">
-      <argument type="service" id=".service_locator.mAgPHiR"/>
+      <argument type="service" id=".service_locator.IUXSMXd"/>
     </service>
     <service id="Symfony\Component\Validator\Constraints\AllValidator" class="Symfony\Component\Validator\Constraints\AllValidator" abstract="true">
       <tag name="container.excluded"/>
@@ -4962,13 +5070,25 @@
       </call>
     </service>
     <service id="doctrine.dbal.default_connection.event_manager" class="Symfony\Bridge\Doctrine\ContainerAwareEventManager">
-      <argument type="service" id=".service_locator.oHZ7Xag"/>
+      <argument type="service" id=".service_locator.aRT19lR"/>
       <argument type="collection">
         <argument type="collection">
           <argument type="collection">
             <argument>preUpdate</argument>
           </argument>
           <argument>vich_uploader.listener.clean.user_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>preUpdate</argument>
+          </argument>
+          <argument>vich_uploader.listener.clean.company_logo_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>preUpdate</argument>
+          </argument>
+          <argument>vich_uploader.listener.clean.signature_image</argument>
         </argument>
         <argument type="collection">
           <argument type="collection">
@@ -5047,6 +5167,54 @@
             <argument>preUpdate</argument>
           </argument>
           <argument>vich_uploader.listener.upload.user_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>preRemove</argument>
+          </argument>
+          <argument>vich_uploader.listener.remove.company_logo_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>postFlush</argument>
+          </argument>
+          <argument>vich_uploader.listener.remove.company_logo_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>prePersist</argument>
+          </argument>
+          <argument>vich_uploader.listener.upload.company_logo_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>preUpdate</argument>
+          </argument>
+          <argument>vich_uploader.listener.upload.company_logo_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>preRemove</argument>
+          </argument>
+          <argument>vich_uploader.listener.remove.signature_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>postFlush</argument>
+          </argument>
+          <argument>vich_uploader.listener.remove.signature_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>prePersist</argument>
+          </argument>
+          <argument>vich_uploader.listener.upload.signature_image</argument>
+        </argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>preUpdate</argument>
+          </argument>
+          <argument>vich_uploader.listener.upload.signature_image</argument>
         </argument>
       </argument>
     </service>
@@ -5140,7 +5308,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator..9CxqUX"/>
+      <argument type="service" id=".service_locator.Pkm3DCS"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5811,6 +5979,9 @@
         <argument type="service" id="twig.extension.security"/>
       </call>
       <call method="addExtension">
+        <argument type="service" id="App\Twig\CustomFiltersExtension"/>
+      </call>
+      <call method="addExtension">
         <argument type="service" id="doctrine.twig.doctrine_extension"/>
       </call>
       <call method="addExtension">
@@ -5944,6 +6115,14 @@
       <call method="addPath">
         <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/vich/uploader-bundle/templates</argument>
         <argument>!VichUploader</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/karser/karser-recaptcha3-bundle/Resources/views</argument>
+        <argument>KarserRecaptcha3</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/vendor/karser/karser-recaptcha3-bundle/Resources/views</argument>
+        <argument>!KarserRecaptcha3</argument>
       </call>
       <call method="addPath">
         <argument>/Users/anthonymerguin/Documents/projet/CorpPilot/templates</argument>
@@ -6253,6 +6432,7 @@
       <argument type="collection">
         <argument key="dev">null</argument>
         <argument key="main" type="service" id=".service_locator.SfGnQiG"/>
+        <argument key="secured_area">null</argument>
       </argument>
     </service>
     <service id="security.user_value_resolver" class="Symfony\Component\Security\Http\Controller\UserValueResolver">
@@ -6301,10 +6481,11 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="security.firewall.map" class="Symfony\Bundle\SecurityBundle\Security\FirewallMap">
-      <argument type="service" id=".service_locator.zJyh7qS"/>
+      <argument type="service" id=".service_locator.gOCcGYL"/>
       <argument type="iterator">
         <argument key="security.firewall.map.context.dev" type="service" id=".security.request_matcher.kLbKLHa"/>
         <argument key="security.firewall.map.context.main">null</argument>
+        <argument key="security.firewall.map.context.secured_area">null</argument>
       </argument>
     </service>
     <service id="security.firewall.context" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext" abstract="true">
@@ -6544,6 +6725,7 @@
     <service id="security.firewall.event_dispatcher_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection">
         <argument key="main" type="service_closure" id="debug.security.event_dispatcher.main"/>
+        <argument key="secured_area" type="service_closure" id="debug.security.event_dispatcher.secured_area"/>
       </argument>
     </service>
     <service id="security.authenticator.manager" class="Symfony\Component\Security\Http\Authentication\AuthenticatorManager" abstract="true">
@@ -6560,6 +6742,7 @@
     <service id="security.authenticator.managers_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection">
         <argument key="main" type="service_closure" id="security.authenticator.manager.main"/>
+        <argument key="secured_area" type="service_closure" id="security.authenticator.manager.secured_area"/>
       </argument>
     </service>
     <service id="security.user_authenticator" class="Symfony\Bundle\SecurityBundle\Security\UserAuthenticator">
@@ -6728,12 +6911,13 @@
       <tag name="console.command" command="debug:firewall"/>
       <tag name="container.no_preload"/>
       <argument>%security.firewalls%</argument>
-      <argument type="service" id=".service_locator.zJyh7qS"/>
-      <argument type="service" id=".service_locator._1SGciK"/>
+      <argument type="service" id=".service_locator.gOCcGYL"/>
+      <argument type="service" id=".service_locator.5_LkNY1"/>
       <argument type="collection">
         <argument key="main" type="collection">
           <argument type="service" id="security.authenticator.form_login.main"/>
         </argument>
+        <argument key="secured_area" type="collection"/>
       </argument>
       <argument>false</argument>
       <call method="setName">
@@ -6949,11 +7133,92 @@
       <argument type="service" id="security.firewall.map.config.main"/>
       <argument type="service" id="security.untracked_token_storage"/>
     </service>
-    <service id=".service_locator.zJyh7qS" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id="security.firewall.map.config.secured_area" class="Symfony\Bundle\SecurityBundle\Security\FirewallConfig">
+      <argument>secured_area</argument>
+      <argument>security.user_checker</argument>
+      <argument>null</argument>
+      <argument>true</argument>
+      <argument>false</argument>
+      <argument>security.user.provider.concrete.app_user_provider</argument>
+      <argument>user</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument type="collection"/>
+      <argument>null</argument>
+      <argument>null</argument>
+    </service>
+    <service id="security.user_checker.chain.secured_area" class="Symfony\Component\Security\Core\User\ChainUserChecker">
+      <argument type="tagged_iterator" tag="security.user_checker.secured_area"/>
+    </service>
+    <service id="security.context_listener.1" class="Symfony\Component\Security\Http\Firewall\ContextListener">
+      <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse"/>
+      <tag name="container.hot_path"/>
+      <argument type="service" id="security.untracked_token_storage"/>
+      <argument type="iterator">
+        <argument type="service" id="security.user.provider.concrete.app_user_provider"/>
+      </argument>
+      <argument>user</argument>
+      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="debug.security.event_dispatcher.secured_area"/>
+      <argument type="service" id="security.authentication.trust_resolver"/>
+      <argument type="collection">
+        <argument type="service" id="security.token_storage"/>
+        <argument>enableUsageTracking</argument>
+      </argument>
+    </service>
+    <service id="security.listener.session.secured_area" class="Symfony\Component\Security\Http\EventListener\SessionStrategyListener">
+      <tag name="kernel.event_subscriber" dispatcher="debug.security.event_dispatcher.secured_area"/>
+      <argument type="service" id="security.authentication.session_strategy"/>
+    </service>
+    <service id="security.authenticator.manager.secured_area" class="Symfony\Component\Security\Http\Authentication\AuthenticatorManager">
+      <tag name="monolog.logger" channel="security"/>
+      <argument type="collection"/>
+      <argument type="service" id="security.token_storage"/>
+      <argument type="service" id="debug.security.event_dispatcher.secured_area"/>
+      <argument>secured_area</argument>
+      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument>true</argument>
+      <argument>true</argument>
+      <argument type="collection"/>
+    </service>
+    <service id="debug.security.firewall.authenticator.secured_area" class="Symfony\Component\Security\Http\Authenticator\Debug\TraceableAuthenticatorManagerListener">
+      <tag name="kernel.reset" method="reset"/>
+      <tag name="container.decorator" id="security.firewall.authenticator.secured_area" inner="debug.security.firewall.authenticator.secured_area.inner"/>
+      <argument type="service" id="debug.security.firewall.authenticator.secured_area.inner"/>
+    </service>
+    <service id="security.listener.user_checker.secured_area" class="Symfony\Component\Security\Http\EventListener\UserCheckerListener">
+      <tag name="kernel.event_subscriber" dispatcher="debug.security.event_dispatcher.secured_area"/>
+      <argument type="service" id="security.user_checker"/>
+    </service>
+    <service id="security.exception_listener.secured_area" class="Symfony\Component\Security\Http\Firewall\ExceptionListener">
+      <argument type="service" id="security.token_storage"/>
+      <argument type="service" id="security.authentication.trust_resolver"/>
+      <argument type="service" id="security.http_utils"/>
+      <argument>secured_area</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument>false</argument>
+    </service>
+    <service id="security.firewall.map.context.secured_area" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext">
+      <argument type="iterator">
+        <argument type="service" id="security.channel_listener"/>
+        <argument type="service" id="security.context_listener.1"/>
+        <argument type="service" id="debug.security.firewall.authenticator.secured_area"/>
+        <argument type="service" id="security.access_listener"/>
+      </argument>
+      <argument type="service" id="security.exception_listener.secured_area"/>
+      <argument>null</argument>
+      <argument type="service" id="security.firewall.map.config.secured_area"/>
+    </service>
+    <service id=".service_locator.gOCcGYL" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="security.firewall.map.context.dev" type="service_closure" id="security.firewall.map.context.dev"/>
         <argument key="security.firewall.map.context.main" type="service_closure" id="security.firewall.map.context.main"/>
+        <argument key="security.firewall.map.context.secured_area" type="service_closure" id="security.firewall.map.context.secured_area"/>
       </argument>
     </service>
     <service id="security.command.user_password_hash" class="Symfony\Component\PasswordHasher\Command\UserPasswordHashCommand">
@@ -7216,33 +7481,13 @@
       <argument type="service" id="maker.security_config_updater"/>
       <argument type="service" id="maker.security_controller_builder"/>
     </service>
-    <service id="doctrine.fixtures_load_command" class="Doctrine\Bundle\FixturesBundle\Command\LoadDataFixturesDoctrineCommand">
-      <tag name="console.command" command="doctrine:fixtures:load"/>
-      <tag name="container.no_preload"/>
-      <argument type="service" id="doctrine.fixtures.loader"/>
-      <argument type="service" id="doctrine"/>
-      <argument type="collection">
-        <argument key="default" type="service" id="doctrine.fixtures.purger.orm_purger_factory"/>
-      </argument>
-      <call method="setName">
-        <argument>doctrine:fixtures:load</argument>
-      </call>
-    </service>
-    <service id="doctrine.fixtures.loader" class="Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader">
-      <argument type="service" id="service_container"/>
-      <call method="addFixtures">
-        <argument type="collection">
-          <argument type="collection">
-            <argument key="fixture" type="service" id="App\DataFixtures\AppFixtures"/>
-            <argument key="groups" type="collection"/>
-          </argument>
-        </argument>
-      </call>
-    </service>
-    <service id="doctrine.fixtures.purger.orm_purger_factory" class="Doctrine\Bundle\FixturesBundle\Purger\ORMPurgerFactory">
-      <tag name="doctrine.fixtures.purger_factory" alias="default"/>
-    </service>
     <service id="Vich\UploaderBundle\Naming\SmartUniqueNamer.user_image" class="Vich\UploaderBundle\Naming\SmartUniqueNamer" public="true">
+      <argument type="service" id="Vich\UploaderBundle\Util\Transliterator"/>
+    </service>
+    <service id="Vich\UploaderBundle\Naming\SmartUniqueNamer.company_logo_image" class="Vich\UploaderBundle\Naming\SmartUniqueNamer" public="true">
+      <argument type="service" id="Vich\UploaderBundle\Util\Transliterator"/>
+    </service>
+    <service id="Vich\UploaderBundle\Naming\SmartUniqueNamer.signature_image" class="Vich\UploaderBundle\Naming\SmartUniqueNamer" public="true">
       <argument type="service" id="Vich\UploaderBundle\Util\Transliterator"/>
     </service>
     <service id="vich_uploader.adapter.mongodb" class="Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter"/>
@@ -7505,12 +7750,148 @@
       <argument type="service" id="vich_uploader.metadata_reader"/>
       <argument type="service" id="vich_uploader.upload_handler"/>
     </service>
+    <service id="vich_uploader.listener.clean.company_logo_image" class="Vich\UploaderBundle\EventListener\Doctrine\CleanListener">
+      <tag name="doctrine.event_listener" event="preUpdate" priority="50"/>
+      <argument>company_logo_image</argument>
+      <argument type="service" id="vich_uploader.adapter.orm"/>
+      <argument type="service" id="vich_uploader.metadata_reader"/>
+      <argument type="service" id="vich_uploader.upload_handler"/>
+    </service>
+    <service id="vich_uploader.listener.remove.company_logo_image" class="Vich\UploaderBundle\EventListener\Doctrine\RemoveListener">
+      <tag name="doctrine.event_listener" event="preRemove" priority="0"/>
+      <tag name="doctrine.event_listener" event="postFlush" priority="0"/>
+      <argument>company_logo_image</argument>
+      <argument type="service" id="vich_uploader.adapter.orm"/>
+      <argument type="service" id="vich_uploader.metadata_reader"/>
+      <argument type="service" id="vich_uploader.upload_handler"/>
+    </service>
+    <service id="vich_uploader.listener.upload.company_logo_image" class="Vich\UploaderBundle\EventListener\Doctrine\UploadListener">
+      <tag name="doctrine.event_listener" event="prePersist" priority="0"/>
+      <tag name="doctrine.event_listener" event="preUpdate" priority="0"/>
+      <argument>company_logo_image</argument>
+      <argument type="service" id="vich_uploader.adapter.orm"/>
+      <argument type="service" id="vich_uploader.metadata_reader"/>
+      <argument type="service" id="vich_uploader.upload_handler"/>
+    </service>
+    <service id="vich_uploader.listener.clean.signature_image" class="Vich\UploaderBundle\EventListener\Doctrine\CleanListener">
+      <tag name="doctrine.event_listener" event="preUpdate" priority="50"/>
+      <argument>signature_image</argument>
+      <argument type="service" id="vich_uploader.adapter.orm"/>
+      <argument type="service" id="vich_uploader.metadata_reader"/>
+      <argument type="service" id="vich_uploader.upload_handler"/>
+    </service>
+    <service id="vich_uploader.listener.remove.signature_image" class="Vich\UploaderBundle\EventListener\Doctrine\RemoveListener">
+      <tag name="doctrine.event_listener" event="preRemove" priority="0"/>
+      <tag name="doctrine.event_listener" event="postFlush" priority="0"/>
+      <argument>signature_image</argument>
+      <argument type="service" id="vich_uploader.adapter.orm"/>
+      <argument type="service" id="vich_uploader.metadata_reader"/>
+      <argument type="service" id="vich_uploader.upload_handler"/>
+    </service>
+    <service id="vich_uploader.listener.upload.signature_image" class="Vich\UploaderBundle\EventListener\Doctrine\UploadListener">
+      <tag name="doctrine.event_listener" event="prePersist" priority="0"/>
+      <tag name="doctrine.event_listener" event="preUpdate" priority="0"/>
+      <argument>signature_image</argument>
+      <argument type="service" id="vich_uploader.adapter.orm"/>
+      <argument type="service" id="vich_uploader.metadata_reader"/>
+      <argument type="service" id="vich_uploader.upload_handler"/>
+    </service>
+    <service id="doctrine.fixtures_load_command" class="Doctrine\Bundle\FixturesBundle\Command\LoadDataFixturesDoctrineCommand">
+      <tag name="console.command" command="doctrine:fixtures:load"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.fixtures.loader"/>
+      <argument type="service" id="doctrine"/>
+      <argument type="collection">
+        <argument key="default" type="service" id="doctrine.fixtures.purger.orm_purger_factory"/>
+      </argument>
+      <call method="setName">
+        <argument>doctrine:fixtures:load</argument>
+      </call>
+    </service>
+    <service id="doctrine.fixtures.loader" class="Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader">
+      <argument type="service" id="service_container"/>
+      <call method="addFixtures">
+        <argument type="collection">
+          <argument type="collection">
+            <argument key="fixture" type="service" id="App\DataFixtures\AppFixtures"/>
+            <argument key="groups" type="collection"/>
+          </argument>
+        </argument>
+      </call>
+    </service>
+    <service id="doctrine.fixtures.purger.orm_purger_factory" class="Doctrine\Bundle\FixturesBundle\Purger\ORMPurgerFactory">
+      <tag name="doctrine.fixtures.purger_factory" alias="default"/>
+    </service>
+    <service id="karser_recaptcha3.host_provider" class="Karser\Recaptcha3Bundle\Services\HostProvider">
+      <argument>www.google.com</argument>
+    </service>
+    <service id="karser_recaptcha3.form.type" class="Karser\Recaptcha3Bundle\Form\Recaptcha3Type">
+      <tag name="form.type"/>
+      <argument>%env(RECAPTCHA3_KEY)%</argument>
+      <argument>www.google.com</argument>
+      <argument>true</argument>
+    </service>
+    <service id="karser_recaptcha3.validator" class="Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator">
+      <tag name="validator.constraint_validator" alias="karser_recaptcha3_validator"/>
+      <argument type="service" id="karser_recaptcha3.google.recaptcha"/>
+      <argument>true</argument>
+      <argument type="service" id="karser_recaptcha3.ip_resolver"/>
+    </service>
+    <service id="karser_recaptcha3.ip_resolver" class="Karser\Recaptcha3Bundle\Services\IpResolver">
+      <argument type="service" id="request_stack"/>
+    </service>
+    <service id="karser_recaptcha3.google.recaptcha" class="ReCaptcha\ReCaptcha">
+      <argument>%env(RECAPTCHA3_SECRET)%</argument>
+      <argument type="service" id="karser_recaptcha3.request_method.symfony_http_client"/>
+      <call method="setScoreThreshold">
+        <argument>0.5</argument>
+      </call>
+    </service>
+    <service id="karser_recaptcha3.google.request_method.curl_post" class="ReCaptcha\RequestMethod\CurlPost">
+      <argument type="service" id="karser_recaptcha3.google.request_method.curl"/>
+      <argument type="expression">service('karser_recaptcha3.host_provider').getVerifyUrl()</argument>
+    </service>
+    <service id="karser_recaptcha3.google.request_method.curl" class="ReCaptcha\RequestMethod\Curl"/>
+    <service id="karser_recaptcha3.request_method.symfony_http_client" class="Karser\Recaptcha3Bundle\RequestMethod\SymfonyHttpClient">
+      <argument type="service" id=".debug.http_client" on-invalid="ignore"/>
+      <argument type="expression">service('karser_recaptcha3.host_provider').getVerifyUrl()</argument>
+    </service>
+    <service id="knp_snappy.pdf" class="Knp\Snappy\Pdf" public="true">
+      <tag name="monolog.logger" channel="snappy"/>
+      <argument>/usr/local/bin/wkhtmltopdf</argument>
+      <argument type="collection"/>
+      <argument type="collection"/>
+      <call method="setLogger">
+        <argument type="service" id="monolog.logger.snappy" on-invalid="ignore"/>
+      </call>
+    </service>
+    <service id="knp_snappy.image" class="Knp\Snappy\Image" public="true">
+      <tag name="monolog.logger" channel="snappy"/>
+      <argument>/usr/local/bin/wkhtmltoimage</argument>
+      <argument type="collection"/>
+      <argument type="collection"/>
+      <call method="setLogger">
+        <argument type="service" id="monolog.logger.snappy" on-invalid="ignore"/>
+      </call>
+    </service>
+    <service id="Knp\Snappy\Pdf" class="Knp\Snappy\Pdf" autowire="true" autoconfigure="true">
+      <argument>/usr/local/bin/wkhtmltopdf</argument>
+      <call method="setLogger">
+        <argument type="service" id="monolog.logger"/>
+      </call>
+    </service>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\CompanyProfileController" class="App\Controller\CompanyProfileController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\CompanyProfileController" class="App\Controller\CompanyProfileController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\CompanyProfileController" class="App\Controller\CompanyProfileController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\LeaveManagementController" class="App\Controller\LeaveManagementController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\LeaveManagementController" class="App\Controller\LeaveManagementController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\LeaveManagementController" class="App\Controller\LeaveManagementController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\LegalController" class="App\Controller\LegalController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\LegalController" class="App\Controller\LegalController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\LegalController" class="App\Controller\LegalController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -7525,20 +7906,28 @@
     <service id=".abstract.instanceof.App\Controller\UserController" class="App\Controller\UserController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\CompanyType" class="App\Form\CompanyType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\CompanyType" class="App\Form\CompanyType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\SetUserType" class="App\Form\SetUserType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\SetUserType" class="App\Form\SetUserType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\UserType" class="App\Form\UserType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\UserType" class="App\Form\UserType" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\VacationAvailableType" class="App\Form\VacationAvailableType" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Form\VacationAvailableType" class="App\Form\VacationAvailableType" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\VacationHoursType" class="App\Form\VacationHoursType" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Form\VacationHoursType" class="App\Form\VacationHoursType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\VacationFormType" class="App\Form\VacationFormType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\VacationFormType" class="App\Form\VacationFormType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CompanyRepository" class="App\Repository\CompanyRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\CompanyRepository" class="App\Repository\CompanyRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\NumberDayOffRepository" class="App\Repository\NumberDayOffRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\NumberDayOffRepository" class="App\Repository\NumberDayOffRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\SignIdRepository" class="App\Repository\SignIdRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\SignIdRepository" class="App\Repository\SignIdRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\VacationRepository" class="App\Repository\VacationRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\VacationRepository" class="App\Repository\VacationRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Twig\Extension\ExtensionInterface.0.App\Twig\CustomFiltersExtension" class="App\Twig\CustomFiltersExtension" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Twig\CustomFiltersExtension" class="App\Twig\CustomFiltersExtension" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Psr\Log\LoggerAwareInterface.0.Knp\Snappy\Pdf" class="Knp\Snappy\Pdf" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.Knp\Snappy\Pdf" class="Knp\Snappy\Pdf" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.bJ.4HC5" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7920,9 +8309,33 @@
         <argument key="loader" type="service_closure" id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface"/>
       </argument>
     </service>
-    <service id=".service_locator.9.EA2Tq" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.V71r_w4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
+    <service id=".service_locator.a_nr8Tn" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="passwordHasher" type="service_closure" id="security.user_password_hasher"/>
+      </argument>
+    </service>
+    <service id=".service_locator.xwG_YWx" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="company" type="service_closure" id=".errored..service_locator.xwG_YWx.App\Entity\Company"/>
+        <argument key="companyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
+        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
+        <argument key="user" type="service_closure" id=".errored..service_locator.xwG_YWx.App\Entity\User"/>
+      </argument>
+    </service>
+    <service id=".service_locator.Ul_Qvgk" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="companyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
         <argument key="security" type="service_closure" id="security.helper"/>
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
         <argument key="vacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
@@ -7943,9 +8356,19 @@
         <argument key="vacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.GMs5F5S" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.fFD37lL" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="companyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
+        <argument key="pdfGenerator" type="service_closure" id="Knp\Snappy\Pdf"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
+        <argument key="vacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.9Z0XlHk" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="companyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
         <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="passwordHasher" type="service_closure" id="security.user_password_hasher"/>
         <argument key="security" type="service_closure" id="security.helper"/>
@@ -7957,9 +8380,10 @@
         <argument key="authenticationUtils" type="service_closure" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.ZVQqiHX" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.J_rWZqs" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="companyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
         <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="numberDayOffRepository" type="service_closure" id="App\Repository\NumberDayOffRepository"/>
         <argument key="security" type="service_closure" id="security.helper"/>
@@ -7967,13 +8391,14 @@
         <argument key="vacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.kaxaMdc" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.SHBjyoO" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="companyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
         <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="security" type="service_closure" id="security.helper"/>
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
-        <argument key="vacation" type="service_closure" id=".errored..service_locator.kaxaMdc.App\Entity\Vacation"/>
+        <argument key="vacation" type="service_closure" id=".errored..service_locator.SHBjyoO.App\Entity\Vacation"/>
       </argument>
     </service>
     <service id=".service_locator.rMV3m6Z" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -7984,20 +8409,22 @@
         <argument key="vacation" type="service_closure" id=".errored..service_locator.rMV3m6Z.App\Entity\Vacation"/>
       </argument>
     </service>
-    <service id=".service_locator.CElJlu_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.MO423Cu" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="companyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
         <argument key="security" type="service_closure" id="security.helper"/>
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.eRJx6vO" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.2koa9ic" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="companyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
         <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="passwordHasher" type="service_closure" id="security.user_password_hasher"/>
         <argument key="security" type="service_closure" id="security.helper"/>
-        <argument key="user" type="service_closure" id=".errored..service_locator.eRJx6vO.App\Entity\User"/>
+        <argument key="user" type="service_closure" id=".errored..service_locator.2koa9ic.App\Entity\User"/>
       </argument>
     </service>
     <service id=".service_locator.itpeuSf" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8009,50 +8436,59 @@
         <argument key="vacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.nG61dgq" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.itsoJoP" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Controller\CompanyProfileController::editCompany" type="service_closure" id=".service_locator.xwG_YWx"/>
+        <argument key="App\Controller\CompanyProfileController::newAdmin" type="service_closure" id=".service_locator.a_nr8Tn"/>
+        <argument key="App\Controller\CompanyProfileController::newCompany" type="service_closure" id=".service_locator.V71r_w4"/>
         <argument key="App\Controller\LeaveManagementController::enAttente" type="service_closure" id=".service_locator.gTFsReg"/>
-        <argument key="App\Controller\LeaveManagementController::index" type="service_closure" id=".service_locator.9.EA2Tq"/>
+        <argument key="App\Controller\LeaveManagementController::generateDocument" type="service_closure" id=".service_locator.fFD37lL"/>
+        <argument key="App\Controller\LeaveManagementController::index" type="service_closure" id=".service_locator.Ul_Qvgk"/>
         <argument key="App\Controller\LeaveManagementController::refus" type="service_closure" id=".service_locator.gTFsReg"/>
         <argument key="App\Controller\LeaveManagementController::suppression" type="service_closure" id=".service_locator.gTFsReg"/>
         <argument key="App\Controller\LeaveManagementController::validation" type="service_closure" id=".service_locator.BF135X0"/>
-        <argument key="App\Controller\ProfileController::index" type="service_closure" id=".service_locator.GMs5F5S"/>
+        <argument key="App\Controller\ProfileController::index" type="service_closure" id=".service_locator.9Z0XlHk"/>
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Controller\StaffVacationController::delete" type="service_closure" id=".service_locator.rMV3m6Z"/>
-        <argument key="App\Controller\StaffVacationController::index" type="service_closure" id=".service_locator.ZVQqiHX"/>
-        <argument key="App\Controller\StaffVacationController::modify" type="service_closure" id=".service_locator.kaxaMdc"/>
+        <argument key="App\Controller\StaffVacationController::index" type="service_closure" id=".service_locator.J_rWZqs"/>
+        <argument key="App\Controller\StaffVacationController::modify" type="service_closure" id=".service_locator.SHBjyoO"/>
         <argument key="App\Controller\UserController::delete" type="service_closure" id=".service_locator.itpeuSf"/>
-        <argument key="App\Controller\UserController::detail" type="service_closure" id=".service_locator.CElJlu_"/>
-        <argument key="App\Controller\UserController::edit" type="service_closure" id=".service_locator.eRJx6vO"/>
-        <argument key="App\Controller\UserController::index" type="service_closure" id=".service_locator.CElJlu_"/>
-        <argument key="App\Controller\UserController::new" type="service_closure" id=".service_locator.GMs5F5S"/>
+        <argument key="App\Controller\UserController::detail" type="service_closure" id=".service_locator.MO423Cu"/>
+        <argument key="App\Controller\UserController::edit" type="service_closure" id=".service_locator.2koa9ic"/>
+        <argument key="App\Controller\UserController::index" type="service_closure" id=".service_locator.MO423Cu"/>
+        <argument key="App\Controller\UserController::new" type="service_closure" id=".service_locator.9Z0XlHk"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
+        <argument key="App\Controller\CompanyProfileController:editCompany" type="service_closure" id=".service_locator.xwG_YWx"/>
+        <argument key="App\Controller\CompanyProfileController:newAdmin" type="service_closure" id=".service_locator.a_nr8Tn"/>
+        <argument key="App\Controller\CompanyProfileController:newCompany" type="service_closure" id=".service_locator.V71r_w4"/>
         <argument key="App\Controller\LeaveManagementController:enAttente" type="service_closure" id=".service_locator.gTFsReg"/>
-        <argument key="App\Controller\LeaveManagementController:index" type="service_closure" id=".service_locator.9.EA2Tq"/>
+        <argument key="App\Controller\LeaveManagementController:generateDocument" type="service_closure" id=".service_locator.fFD37lL"/>
+        <argument key="App\Controller\LeaveManagementController:index" type="service_closure" id=".service_locator.Ul_Qvgk"/>
         <argument key="App\Controller\LeaveManagementController:refus" type="service_closure" id=".service_locator.gTFsReg"/>
         <argument key="App\Controller\LeaveManagementController:suppression" type="service_closure" id=".service_locator.gTFsReg"/>
         <argument key="App\Controller\LeaveManagementController:validation" type="service_closure" id=".service_locator.BF135X0"/>
-        <argument key="App\Controller\ProfileController:index" type="service_closure" id=".service_locator.GMs5F5S"/>
+        <argument key="App\Controller\ProfileController:index" type="service_closure" id=".service_locator.9Z0XlHk"/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Controller\StaffVacationController:delete" type="service_closure" id=".service_locator.rMV3m6Z"/>
-        <argument key="App\Controller\StaffVacationController:index" type="service_closure" id=".service_locator.ZVQqiHX"/>
-        <argument key="App\Controller\StaffVacationController:modify" type="service_closure" id=".service_locator.kaxaMdc"/>
+        <argument key="App\Controller\StaffVacationController:index" type="service_closure" id=".service_locator.J_rWZqs"/>
+        <argument key="App\Controller\StaffVacationController:modify" type="service_closure" id=".service_locator.SHBjyoO"/>
         <argument key="App\Controller\UserController:delete" type="service_closure" id=".service_locator.itpeuSf"/>
-        <argument key="App\Controller\UserController:detail" type="service_closure" id=".service_locator.CElJlu_"/>
-        <argument key="App\Controller\UserController:edit" type="service_closure" id=".service_locator.eRJx6vO"/>
-        <argument key="App\Controller\UserController:index" type="service_closure" id=".service_locator.CElJlu_"/>
-        <argument key="App\Controller\UserController:new" type="service_closure" id=".service_locator.GMs5F5S"/>
+        <argument key="App\Controller\UserController:detail" type="service_closure" id=".service_locator.MO423Cu"/>
+        <argument key="App\Controller\UserController:edit" type="service_closure" id=".service_locator.2koa9ic"/>
+        <argument key="App\Controller\UserController:index" type="service_closure" id=".service_locator.MO423Cu"/>
+        <argument key="App\Controller\UserController:new" type="service_closure" id=".service_locator.9Z0XlHk"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
       </argument>
     </service>
-    <service id=".service_locator.mAgPHiR" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.IUXSMXd" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator" type="service_closure" id="karser_recaptcha3.validator"/>
         <argument key="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator" type="service_closure" id="doctrine.orm.validator.unique"/>
         <argument key="Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator" type="service_closure" id="security.validator.user_password"/>
         <argument key="Symfony\Component\Validator\Constraints\EmailValidator" type="service_closure" id="validator.email"/>
@@ -8061,6 +8497,7 @@
         <argument key="Symfony\Component\Validator\Constraints\NotCompromisedPasswordValidator" type="service_closure" id="validator.not_compromised_password"/>
         <argument key="Symfony\Component\Validator\Constraints\WhenValidator" type="service_closure" id="validator.when"/>
         <argument key="doctrine.orm.validator.unique" type="service_closure" id="doctrine.orm.validator.unique"/>
+        <argument key="karser_recaptcha3_validator" type="service_closure" id="karser_recaptcha3.validator"/>
         <argument key="security.validator.user_password" type="service_closure" id="security.validator.user_password"/>
         <argument key="validator.expression" type="service_closure" id="validator.expression"/>
       </argument>
@@ -8207,13 +8644,14 @@
       <argument type="service" id="argument_resolver.query_parameter_value_resolver"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.gXfxE_u" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.8f_Y7fv" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Form\CompanyType" type="service_closure" id="App\Form\CompanyType"/>
         <argument key="App\Form\SetUserType" type="service_closure" id="App\Form\SetUserType"/>
         <argument key="App\Form\UserType" type="service_closure" id="App\Form\UserType"/>
-        <argument key="App\Form\VacationAvailableType" type="service_closure" id="App\Form\VacationAvailableType"/>
-        <argument key="App\Form\VacationHoursType" type="service_closure" id="App\Form\VacationHoursType"/>
+        <argument key="App\Form\VacationFormType" type="service_closure" id="App\Form\VacationFormType"/>
+        <argument key="Karser\Recaptcha3Bundle\Form\Recaptcha3Type" type="service_closure" id="karser_recaptcha3.form.type"/>
         <argument key="Symfony\Bridge\Doctrine\Form\Type\EntityType" type="service_closure" id="form.type.entity"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ChoiceType" type="service_closure" id="form.type.choice"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ColorType" type="service_closure" id="form.type.color"/>
@@ -8329,7 +8767,7 @@
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
     </service>
-    <service id=".service_locator.oHZ7Xag" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.aRT19lR" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="doctrine.orm.default_listeners.attach_entity_listeners" type="service_closure" id="doctrine.orm.default_listeners.attach_entity_listeners"/>
@@ -8339,15 +8777,23 @@
         <argument key="doctrine.orm.listeners.pdo_session_handler_schema_listener" type="service_closure" id="doctrine.orm.listeners.pdo_session_handler_schema_listener"/>
         <argument key="doctrine.orm.messenger.doctrine_schema_listener" type="service_closure" id="doctrine.orm.messenger.doctrine_schema_listener"/>
         <argument key="turbo.doctrine.event_listener" type="service_closure" id="turbo.doctrine.event_listener"/>
+        <argument key="vich_uploader.listener.clean.company_logo_image" type="service_closure" id="vich_uploader.listener.clean.company_logo_image"/>
+        <argument key="vich_uploader.listener.clean.signature_image" type="service_closure" id="vich_uploader.listener.clean.signature_image"/>
         <argument key="vich_uploader.listener.clean.user_image" type="service_closure" id="vich_uploader.listener.clean.user_image"/>
+        <argument key="vich_uploader.listener.remove.company_logo_image" type="service_closure" id="vich_uploader.listener.remove.company_logo_image"/>
+        <argument key="vich_uploader.listener.remove.signature_image" type="service_closure" id="vich_uploader.listener.remove.signature_image"/>
         <argument key="vich_uploader.listener.remove.user_image" type="service_closure" id="vich_uploader.listener.remove.user_image"/>
+        <argument key="vich_uploader.listener.upload.company_logo_image" type="service_closure" id="vich_uploader.listener.upload.company_logo_image"/>
+        <argument key="vich_uploader.listener.upload.signature_image" type="service_closure" id="vich_uploader.listener.upload.signature_image"/>
         <argument key="vich_uploader.listener.upload.user_image" type="service_closure" id="vich_uploader.listener.upload.user_image"/>
       </argument>
     </service>
-    <service id=".service_locator..9CxqUX" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.Pkm3DCS" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Repository\CompanyRepository" type="service_closure" id="App\Repository\CompanyRepository"/>
         <argument key="App\Repository\NumberDayOffRepository" type="service_closure" id="App\Repository\NumberDayOffRepository"/>
+        <argument key="App\Repository\SignIdRepository" type="service_closure" id="App\Repository\SignIdRepository"/>
         <argument key="App\Repository\UserRepository" type="service_closure" id="App\Repository\UserRepository"/>
         <argument key="App\Repository\VacationRepository" type="service_closure" id="App\Repository\VacationRepository"/>
       </argument>
@@ -8538,6 +8984,16 @@
       </call>
       <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
     </service>
+    <service id="monolog.logger.snappy" class="Monolog\Logger">
+      <argument>snappy</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.console"/>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
+    </service>
     <service id="monolog.logger.deprecation" class="Monolog\Logger" public="true">
       <argument>deprecation</argument>
       <call method="pushHandler">
@@ -8661,6 +9117,78 @@
         <argument>0</argument>
       </call>
     </service>
+    <service id="debug.security.event_dispatcher.secured_area" class="Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher">
+      <tag name="security.event_dispatcher.secured_area">event_dispatcher.dispatcher</tag>
+      <tag name="container.decorator" id="security.event_dispatcher.secured_area" inner="debug.security.event_dispatcher.secured_area.inner"/>
+      <argument type="service" id="debug.security.event_dispatcher.secured_area.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+      <argument type="service" id="monolog.logger" on-invalid="null"/>
+      <argument type="service" id="request_stack" on-invalid="null"/>
+      <call method="addListener">
+        <argument>Symfony\Component\Security\Http\Event\LoginSuccessEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.listener.session.secured_area"/>
+          <argument>onSuccessfulLogin</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Security\Http\Event\CheckPassportEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.listener.user_checker.secured_area"/>
+          <argument>preCheckCredentials</argument>
+        </argument>
+        <argument>256</argument>
+      </call>
+      <call method="addListener">
+        <argument>security.authentication.success</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.listener.user_checker.secured_area"/>
+          <argument>postCheckCredentials</argument>
+        </argument>
+        <argument>256</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Security\Http\Event\CheckPassportEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.listener.user_provider"/>
+          <argument>checkPassport</argument>
+        </argument>
+        <argument>1024</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Security\Http\Event\CheckPassportEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.listener.check_authenticator_credentials"/>
+          <argument>checkPassport</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Security\Http\Event\LoginSuccessEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.listener.password_migrating"/>
+          <argument>onLoginSuccess</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Security\Http\Event\CheckPassportEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.listener.csrf_protection"/>
+          <argument>checkPassport</argument>
+        </argument>
+        <argument>512</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Security\Http\Event\LogoutEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="security.logout.listener.csrf_token_clearing"/>
+          <argument>onLogout</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+    </service>
     <service id=".service_locator.jUv.zyj" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8677,6 +9205,12 @@
         <argument key="web_link.http_header_serializer" type="service_closure" id="web_link.http_header_serializer" on-invalid="ignore"/>
       </argument>
     </service>
+    <service id=".service_locator.jUv.zyj.App\Controller\CompanyProfileController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\CompanyProfileController"/>
+      <argument>App\Controller\CompanyProfileController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.jUv.zyj" method="withContext"/>
+    </service>
     <service id=".service_locator.jUv.zyj.App\Controller\HomeController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\HomeController"/>
       <argument>App\Controller\HomeController</argument>
@@ -8686,6 +9220,12 @@
     <service id=".service_locator.jUv.zyj.App\Controller\LeaveManagementController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\LeaveManagementController"/>
       <argument>App\Controller\LeaveManagementController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.jUv.zyj" method="withContext"/>
+    </service>
+    <service id=".service_locator.jUv.zyj.App\Controller\LegalController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\LegalController"/>
+      <argument>App\Controller\LegalController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.jUv.zyj" method="withContext"/>
     </service>
@@ -8796,11 +9336,12 @@
         <argument key="cache.app" type="service_closure" id="cache.app.taggable"/>
       </argument>
     </service>
-    <service id=".service_locator._1SGciK" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.5_LkNY1" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="event_dispatcher" type="service_closure" id="debug.event_dispatcher"/>
         <argument key="security.event_dispatcher.main" type="service_closure" id="debug.security.event_dispatcher.main"/>
+        <argument key="security.event_dispatcher.secured_area" type="service_closure" id="debug.security.event_dispatcher.secured_area"/>
       </argument>
     </service>
     <service id=".service_locator.LD5oJC8" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -9056,6 +9597,9 @@
     <service id="debug.security.firewall.authenticator.main.inner" class="Symfony\Component\Security\Http\Firewall\AuthenticatorManagerListener">
       <argument type="service" id="security.authenticator.manager.main"/>
     </service>
+    <service id="debug.security.firewall.authenticator.secured_area.inner" class="Symfony\Component\Security\Http\Firewall\AuthenticatorManagerListener">
+      <argument type="service" id="security.authenticator.manager.secured_area"/>
+    </service>
     <service id="debug.traced.messenger.bus.default.inner" class="Symfony\Component\Messenger\MessageBus">
       <argument type="iterator">
         <argument type="service" id="messenger.bus.default.middleware.traceable"/>
@@ -9078,17 +9622,24 @@
       </call>
     </service>
     <service id="debug.security.event_dispatcher.main.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
+    <service id="debug.security.event_dispatcher.secured_area.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
     <service id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.y4_Zrx.&quot;: it needs an instance of &quot;Symfony\Component\Config\Loader\LoaderInterface&quot; but this type has been excluded from autowiring."/>
     </service>
-    <service id=".errored..service_locator.kaxaMdc.App\Entity\Vacation" class="App\Entity\Vacation">
-      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.kaxaMdc&quot;: it needs an instance of &quot;App\Entity\Vacation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    <service id=".errored..service_locator.xwG_YWx.App\Entity\Company" class="App\Entity\Company">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.xwG_YWx&quot;: it needs an instance of &quot;App\Entity\Company&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.xwG_YWx.App\Entity\User" class="App\Entity\User">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.xwG_YWx&quot;: it needs an instance of &quot;App\Entity\User&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.SHBjyoO.App\Entity\Vacation" class="App\Entity\Vacation">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.SHBjyoO&quot;: it needs an instance of &quot;App\Entity\Vacation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".errored..service_locator.rMV3m6Z.App\Entity\Vacation" class="App\Entity\Vacation">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.rMV3m6Z&quot;: it needs an instance of &quot;App\Entity\Vacation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
-    <service id=".errored..service_locator.eRJx6vO.App\Entity\User" class="App\Entity\User">
-      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.eRJx6vO&quot;: it needs an instance of &quot;App\Entity\User&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    <service id=".errored..service_locator.2koa9ic.App\Entity\User" class="App\Entity\User">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.2koa9ic&quot;: it needs an instance of &quot;App\Entity\User&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".console.command.about.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>about</argument>
@@ -9838,10 +10389,10 @@
         <argument key="lint:twig">twig.command.lint</argument>
         <argument key="debug:firewall">security.command.debug_firewall</argument>
         <argument key="security:hash-password">security.command.user_password_hash</argument>
-        <argument key="doctrine:fixtures:load">doctrine.fixtures_load_command</argument>
         <argument key="vich:mapping:debug-class">vich_uploader.command.mapping_debug_class</argument>
         <argument key="vich:mapping:debug">vich_uploader.command.mapping_debug</argument>
         <argument key="vich:mapping:list-classes">vich_uploader.command.mapping_list_classes</argument>
+        <argument key="doctrine:fixtures:load">doctrine.fixtures_load_command</argument>
         <argument key="make:auth">maker.auto_command.make_auth</argument>
         <argument key="make:command">maker.auto_command.make_command</argument>
         <argument key="make:twig-component">maker.auto_command.make_twig_component</argument>
@@ -10217,7 +10768,9 @@
     <service id="Symfony\Component\Security\Core\User\UserProviderInterface" alias="security.user.provider.concrete.app_user_provider"/>
     <service id="security.authentication.session_strategy.main" alias="security.authentication.session_strategy"/>
     <service id="security.user_checker.main" alias="security.user_checker"/>
-    <service id="security.firewall.context_locator" alias=".service_locator.zJyh7qS"/>
+    <service id="security.authentication.session_strategy.secured_area" alias="security.authentication.session_strategy"/>
+    <service id="security.user_checker.secured_area" alias="security.user_checker"/>
+    <service id="security.firewall.context_locator" alias=".service_locator.gOCcGYL"/>
     <service id="Symfony\Component\Security\Core\User\UserCheckerInterface" alias="security.user_checker"/>
     <service id="logger" alias="monolog.logger"/>
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
@@ -10241,9 +10794,12 @@
     <service id="Vich\UploaderBundle\Handler\UploadHandler" alias="vich_uploader.upload_handler"/>
     <service id="Vich\UploaderBundle\Form\Type\VichFileType" alias="vich_uploader.form.type.file"/>
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image"/>
+    <service id="Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator" alias="karser_recaptcha3.validator"/>
+    <service id="karser_recaptcha3.google.request_method" alias="karser_recaptcha3.request_method.symfony_http_client"/>
+    <service id="Knp\Snappy\Image" alias="knp_snappy.image"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.bJ.4HC5" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.nG61dgq"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.itsoJoP"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -10263,10 +10819,11 @@
     <service id="Psr\Log\LoggerInterface $doctrineLogger" alias="monolog.logger.doctrine"/>
     <service id="Psr\Log\LoggerInterface $debugLogger" alias="monolog.logger.debug"/>
     <service id="Psr\Log\LoggerInterface $securityLogger" alias="monolog.logger.security"/>
+    <service id="Psr\Log\LoggerInterface $snappyLogger" alias="monolog.logger.snappy"/>
     <service id="Psr\Log\LoggerInterface $deprecationLogger" alias="monolog.logger.deprecation"/>
     <service id=".service_locator.80edgLI" alias="messenger.receiver_locator"/>
     <service id=".service_locator.h8Jkkd2" alias="messenger.retry_strategy_locator"/>
-    <service id=".service_locator.BFrsqsn" alias=".service_locator.mAgPHiR"/>
+    <service id=".service_locator.sO2baFT" alias=".service_locator.IUXSMXd"/>
     <service id="validator" alias="debug.validator"/>
     <service id="http_client" alias=".debug.http_client"/>
     <service id=".debug.http_client.inner" alias="http_client.uri_template"/>
@@ -10282,20 +10839,26 @@
     <service id="turbo.broadcaster.imux" alias="turbo.broadcaster.action_renderer"/>
     <service id="security.access.decision_manager" alias="debug.security.access.decision_manager"/>
     <service id="security.firewall.authenticator.main" alias="debug.security.firewall.authenticator.main"/>
+    <service id="security.firewall.authenticator.secured_area" alias="debug.security.firewall.authenticator.secured_area"/>
     <service id="messenger.bus.default" alias="debug.traced.messenger.bus.default"/>
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id="security.event_dispatcher.main" alias="debug.security.event_dispatcher.main"/>
+    <service id="security.event_dispatcher.secured_area" alias="debug.security.event_dispatcher.secured_area"/>
     <service id=".service_locator.gFlme_s" alias=".service_locator.y4_Zrx."/>
-    <service id=".service_locator.YSsAhCY" alias=".service_locator.9.EA2Tq"/>
+    <service id=".service_locator.6k5RJBU" alias=".service_locator.V71r_w4"/>
+    <service id=".service_locator.TUfW7zh" alias=".service_locator.a_nr8Tn"/>
+    <service id=".service_locator.PYcwArd" alias=".service_locator.xwG_YWx"/>
+    <service id=".service_locator.Zq2b0jO" alias=".service_locator.Ul_Qvgk"/>
     <service id=".service_locator.t_tHO59" alias=".service_locator.BF135X0"/>
     <service id=".service_locator.0YBxJTe" alias=".service_locator.gTFsReg"/>
-    <service id=".service_locator.Nbm8.Qg" alias=".service_locator.GMs5F5S"/>
+    <service id=".service_locator.qnn3ANp" alias=".service_locator.fFD37lL"/>
+    <service id=".service_locator.EWbaG__" alias=".service_locator.9Z0XlHk"/>
     <service id=".service_locator.7NIAq8D" alias=".service_locator.rSTd.nA"/>
-    <service id=".service_locator.wb5VMCq" alias=".service_locator.ZVQqiHX"/>
-    <service id=".service_locator.iDBrSt3" alias=".service_locator.kaxaMdc"/>
+    <service id=".service_locator.HxbP1WQ" alias=".service_locator.J_rWZqs"/>
+    <service id=".service_locator.6lzUi6q" alias=".service_locator.SHBjyoO"/>
     <service id=".service_locator.eieuaYl" alias=".service_locator.rMV3m6Z"/>
-    <service id=".service_locator.j3CwlUb" alias=".service_locator.CElJlu_"/>
-    <service id=".service_locator.xHMYhje" alias=".service_locator.eRJx6vO"/>
+    <service id=".service_locator.YaaIajM" alias=".service_locator.MO423Cu"/>
+    <service id=".service_locator.3mCHkN5" alias=".service_locator.2koa9ic"/>
     <service id=".service_locator.BXSRv6i" alias=".service_locator.itpeuSf"/>
     <service id=".service_locator.Q1z.f9O" alias=".service_locator.jUv.zyj"/>
   </services>

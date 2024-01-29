@@ -1,81 +1,97 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Demande de congés | {{ companyAbrev }}Gest{% endblock %}
+{% block title %}Demande de congés | {{ company.companyAbrev }}{% endblock %}
 
 {% block body %}
 <div id="desktopNav" style="display: none;">
     {% include "partials/_desktopNav.html.twig" %}
 </div>
 <div class="container">
-    <section class="headerStaff">
-        <div class="row mt-4 ">
-            <div id="desktopUser" class="col-4" style="display: none;">
-                {% include "partials/_currentUser.html.twig" %}
-            </div>
-            <div class="col-4"></div>
-            <div class="col-4 d-flex justify-content-center align-items-center">
-                <img src="{{ asset('assets/svg/blason.svg') }}" width="100" alt="Blason de la ville de deyvillers">
-            </div>
-            <div id="phonelogout" class="col-4 d-flex justify-content-end align-items-center">
-                {% include "partials/_logout.html.twig" %}
-            </div>
-        </div>
-    </section>
-    <div id="phoneUser" style="display: none;">
-        {% include "partials/_currentUser.html.twig" %}
+    {% include "partials/_headerStaff.html.twig" %}
+<div id="phoneUser" style="display: none;">
+    {% include "partials/_currentUser.html.twig" %}
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <h1 class="text-center">Demande de congés</h1>
     </div>
-    <div class="row mt-4">
-        <div class="col-12">
-            <h1 class="text-center">Demande de congés</h1>
-        </div>
+</div>
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success w-50 mx-auto my-4  text-center">
+        {{ message }}
     </div>
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success w-50 mx-auto my-4  text-center">
-            {{ message }}
-        </div>
-    {% endfor %}
+{% endfor %}
+{% for message in app.flashes('danger') %}
+    <div class="alert alert-danger w-50 mx-auto my-4  text-center">
+        {{ message }}
+    </div>
+{% endfor %}
 <div class="row">
     <div class="col-md-6">
         <section class="formVac" id="col1">
-            <label>Choisissez votre compte</label>
-            <select id="vacationType" class="form-select w-75 d-block mx-auto mb-4">
-                <option value="1">Jour de congé classique</option>
-                <option value="2">Compte épargne temps</option>
-                <option value="3">Heures</option>
-            </select>
-                <div id="formDays">
-                    {% include "partials/_formDays.html.twig" %}
-                </div>
-                <div id="formHours" class="d-none">
-                    {% include "partials/_formHours.html.twig" %}
-                </div>
-            </section>
-        </div>
-        <div class="col-md-6">
-            <section class="vacStatus" id="col2">
+        {{ form_start(form) }}
+            <div class="form-group">
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="text-center">Statut demande</h2>
+                        <h2 class="text-center">Nouvelle demande</h2>
+                    </div>
+                    <div class="col-10 mx-auto">
+                    {{ form_row(form.account) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="th_period"></th>
-                                    <th class="th_verif"></th>
-                                    <th class="th_modify"></th>
-                                    <th class="th_delete"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for vacation in vacations %}
-                                    <tr>
+                    <div class="col-5 mx-auto">
+                        {{ form_row(form.startDate) }}
+                    </div>
+                    <div class="col-5 mx-auto">
+                        {{ form_row(form.endDate) }}
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-5 mx-auto">
+                        {{ form_row(form.startHours) }}
+                    </div>
+                    <div class="col-5 mx-auto">
+                        {{ form_row(form.endHours) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 mx-auto">
+                        {{ form_row(form.submit) }}
+                    </div>
+                </div>
+            </div>
+            
+        {{ form_end(form) }}
+        </section>      
+    </div>
+    <div class="col-md-6">
+        <section class="vacStatus" id="col2">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center">Statut demande</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="th_period"></th>
+                                <th class="th_verif"></th>
+                                <th class="th_modify"></th>
+                                <th class="th_delete"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vacation in vacations %}
+                                {% if vacation.endDate >= date('now') %}
+                                    <tr class="mt-2">
                                         <td>
+                                        {% if vacation.account == 3 %}
+                                            {{ vacation.startDate|date('d/m/Y') ~ ' au ' ~ vacation.endDate|date('d/m/Y') }}<br>{{ vacation.startHours|date('H:i') ~ ' à ' ~ vacation.endHours|date('H:i') }}
+                                            {% else %}
                                             {{ vacation.startDate|date('d/m/Y') ~ ' au ' ~ vacation.endDate|date('d/m/Y') }}
-                                            {% if vacation.startHours is not null and vacation.endHours is not null %}
-                                                <span class="hours">{{ vacation.startHours|date('H:i') ~ ' à ' ~ vacation.endHours|date('H:i') }}</span>
                                             {% endif %}
                                         </td>
                                         <td>
@@ -87,6 +103,7 @@
                                                 <img src="{{ asset('assets/svg/cancel.svg') }}" alt="Refusé">
                                             {% endif %}
                                         </td>
+                                        {% if vacation.approved == 0 %}
                                         <td>
                                             <a href="{{ path('app_staff_vacation_modify', {'id': vacation.id}) }}">
                                                 <img src="{{ asset('assets/svg/modify.svg') }}" alt="Modifier">
@@ -97,15 +114,23 @@
                                                 <img src="{{ asset('assets/svg/trash.svg') }}" alt="Supprimer">
                                             </a>
                                         </td>
+                                        {% else %}
+                                        <td>
+                                            <a href="{{ path('app_generate_document', {'id': vacation.id}) }}">
+                                                <img src="{{ asset('assets/svg/validDoc.svg') }}" alt="Document justificatif">
+                                            </a>
+                                        </td>
+                                        {% endif %}
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </div>
+</div>
     <section class="vacDispo my-4">
         <div class="row">
             <div class="col-12 d-flex flex-row justify-content-around">
@@ -119,40 +144,18 @@
                     <p>Jours - compte épargne temps</p>
                 </div>
                 <div>
-                    <span>{{ dayVacation.hoursAvailable }}</span>
+                    <span>{{ dayVacation.hoursAvailable|formatHours }}</span>
                     <p>Heures disponibles</p>
                 </div>
                 {% endfor %}
             </div>
         </div>
     </section>
-</div>
-<div id="phoneNav" style="display: none;">
-    {% include "partials/_phoneNav.html.twig" %}
-</div>
 
+{% include "partials/_phoneNav.html.twig" %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var vacationTypeSelect = document.getElementById('vacationType');
-        var formDaysDiv = document.getElementById('formDays');
-        var formHoursDiv = document.getElementById('formHours');
-
-        vacationTypeSelect.addEventListener('change', function() {
-            var selectedValue = vacationTypeSelect.value;
-
-            formDaysDiv.style.display = 'none';
-            formHoursDiv.style.display = 'none';
-
-            if (selectedValue === '1') {
-                formDaysDiv.style.display = 'block';
-            } else if (selectedValue === '2') {
-                formDaysDiv.style.display = 'block';
-            } else if (selectedValue === '3') {
-                formHoursDiv.classList.remove('d-none');
-                formHoursDiv.style.display = 'block';
-                document.querySelector('.hours').classList.remove('d-none');
-            }
-        });
+  
 
     var columns; // Déclarer la variable columns en dehors des fonctions
 

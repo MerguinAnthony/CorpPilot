@@ -6,9 +6,10 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Entity\NumberDayOff;
 use App\Repository\UserRepository;
+use App\Repository\CompanyRepository;
+use App\Repository\VacationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NumberDayOffRepository;
-use App\Repository\VacationRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +28,11 @@ class UserController extends AbstractController
 {
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/gestion-des-Employes', name: 'app_user')]
-    public function index(UserRepository $userRepository, Security $security): Response
-    {
+    public function index(
+        UserRepository $userRepository,
+        Security $security,
+        CompanyRepository $companyRepository,
+    ): Response {
         $currentUser = $security->getUser();
 
         $users = $userRepository->findAll();
@@ -36,7 +40,7 @@ class UserController extends AbstractController
         return $this->render('pages/user/index.html.twig', [
             'users' => $users,
             'currentUser' => $currentUser,
-            'companyAbrev' => $this->getParameter('company_abrev'),
+            'company' => $companyRepository->findOneBy(['id' => $currentUser]),
         ]);
     }
 
@@ -52,8 +56,12 @@ class UserController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/gestion-des-Employes/details/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function detail(int $id, UserRepository $userRepository, Security $security): Response
-    {
+    public function detail(
+        int $id,
+        UserRepository $userRepository,
+        Security $security,
+        CompanyRepository $companyRepository,
+    ): Response {
         $users = $userRepository->findAll();
         $adminCount = 0;
         $userCount = 0;
@@ -72,8 +80,7 @@ class UserController extends AbstractController
 
         return $this->render('pages/user/detail.html.twig', [
             'user' => $user,
-            'companyAbrev' => $this->getParameter('company_abrev'),
-            'company_name' => $this->getParameter('company_name'),
+            'company' => $companyRepository->findOneBy(['id' => $currentUser]),
             'currentUser' => $currentUser,
             'adminCount' => $adminCount,
             'userCount' => $userCount,
@@ -100,8 +107,13 @@ class UserController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/gestion-des-Employes/ajouter', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher, Security $security): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $manager,
+        UserPasswordHasherInterface $passwordHasher,
+        Security $security,
+        CompanyRepository $companyRepository,
+    ): Response {
         $currentUser = $security->getUser();
 
         $user = new User();
@@ -125,7 +137,7 @@ class UserController extends AbstractController
             $numberDayOff->setUserDay($user);
             $numberDayOff->setAvailable(0);
             $numberDayOff->setCet(0);
-            $numberDayOff->setHoursAvailable(0);
+            $numberDayOff->setHoursAvailable(10);
             $manager->persist($numberDayOff);
             $manager->flush();
 
@@ -136,7 +148,7 @@ class UserController extends AbstractController
 
         return $this->render('pages/user/new.html.twig', [
             'form' => $form->createView(),
-            'companyAbrev' => $this->getParameter('company_abrev'),
+            'company' => $companyRepository->findOneBy(['id' => $currentUser]),
             'currentUser' => $currentUser,
         ]);
     }
@@ -155,8 +167,15 @@ class UserController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/gestion-des-Employes/modifier/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher, int $id, Security $security): Response
-    {
+    public function edit(
+        Request $request,
+        User $user,
+        EntityManagerInterface $manager,
+        UserPasswordHasherInterface $passwordHasher,
+        int $id,
+        Security $security,
+        CompanyRepository $companyRepository,
+    ): Response {
         $currentUser = $security->getUser();
 
         $form = $this->createForm(UserType::class, $user);
@@ -183,15 +202,20 @@ class UserController extends AbstractController
 
         return $this->render('pages/user/edit.html.twig', [
             'form' => $form->createView(),
-            'companyAbrev' => $this->getParameter('company_abrev'),
+            'company' => $companyRepository->findOneBy(['id' => $currentUser]),
             'currentUser' => $currentUser,
         ]);
     }
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/gestion-des-Employes/supprimer/{id}', name: 'app_user_delete', methods: ['POST', 'GET'])]
-    public function delete(UserRepository $user, int $id, EntityManagerInterface $manager, NumberDayOffRepository $numberDayOff, VacationRepository $vacationRepository): Response
-    {
+    public function delete(
+        UserRepository $user,
+        int $id,
+        EntityManagerInterface $manager,
+        NumberDayOffRepository $numberDayOff,
+        VacationRepository $vacationRepository
+    ): Response {
         $numberDayOff = $numberDayOff->findOneBy(['userDay' => $id]);
         if ($numberDayOff) {
             $manager->remove($numberDayOff);
